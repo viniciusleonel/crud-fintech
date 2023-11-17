@@ -1,0 +1,63 @@
+body {
+    font-family: 'Zen Antique', serif;
+    font-weight: 300;
+    font-size: 1.6rem;
+    color: white;
+}
+
+:root{
+    --bg-btn-dark: rgba(0, 0, 0, 0.5);
+    --bg-btn-blue: rgba(33, 48, 190, 0.4);
+    --bg-btn-data: rgb(89, 117, 214);
+}
+
+.bg-img {
+    background-image: url(../img/inovacao-e-tecnologia.jpg);
+    width: auto;
+    background-repeat: no-repeat;
+    background-size: cover;
+    
+}
+
+.btn {
+    font-size: 18px;
+}
+
+.bg-btn-dark {
+    background: var(--bg-btn-dark);
+}
+
+.bg-btn-blue {
+    background: var(--bg-btn-blue);
+}
+
+.bg-btn-dark:hover, .bg-btn-blue:hover {
+    background-color: transparent;
+    color: white;
+    border-color: black;
+}
+
+.form-area {
+    background-color: var(--bg-btn-data);
+    border-color: var(--bg-btn-blue);
+    color: white;
+}
+
+.btn-logar:hover {
+    background-color: var(--bg-btn-data);
+}
+
+.home {
+    text-decoration: none;
+}
+
+input:invalid {
+    border: 2px inset red;
+}
+
+@media(max-width: 1300px){
+    .bg-img{
+        background-position: 55% 50%;
+        height: 100vh;
+    }
+}
