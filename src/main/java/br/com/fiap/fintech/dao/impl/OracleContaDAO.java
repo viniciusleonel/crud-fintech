@@ -32,12 +32,8 @@ public class OracleContaDAO implements ContaDAO{
                 
                 if (rs.next()) {
                     proximoValor = rs.getInt(1);
-                    System.out.println("O próximo valor da sequência é: " + proximoValor);
                 }
-
-                // Agora você pode usar a variável 'proximoValor' conforme necessário
-                // por exemplo, salvá-la em uma variável ou usá-la em outra parte do seu código.
-            }
+               }
 			
 			stmt = conexao.prepareStatement(
 					"INSERT INTO TB_FIN_CONTA ("
@@ -47,9 +43,7 @@ public class OracleContaDAO implements ContaDAO{
 			stmt.setDouble(2, conta.getSaldo());
 			stmt.setString(3, conta.getStatus());
 			stmt.executeUpdate();
-			
-			System.out.println("Conta " + conta.getCodigo() + " registrada!");
-			
+						
 		}catch (SQLException e) {
 			e.printStackTrace();
 			throw new DBException("Erro ao cadastradar.");
@@ -84,9 +78,7 @@ public class OracleContaDAO implements ContaDAO{
 			stmt.setInt(4, conta.getCodigo());
 			stmt.setInt(5, cd_conta);
 			stmt.executeUpdate();
-			
-			System.out.println("Conta " + conta.getCodigo() + "  atualizada!");
-			
+						
 		}catch (SQLException e) {
 			e.printStackTrace();
 			throw new DBException("Erro ao atualizar.");
@@ -113,9 +105,7 @@ public class OracleContaDAO implements ContaDAO{
 						+ "WHERE CD_CONTA = ? ");
 			stmt.setInt(1, cd);
 			stmt.executeUpdate();
-			
-			System.out.println("Conta " + cd + " removida!");
-			
+						
 		}catch (SQLException e) {
 			e.printStackTrace();
 			throw new DBException("Erro ao remover.");

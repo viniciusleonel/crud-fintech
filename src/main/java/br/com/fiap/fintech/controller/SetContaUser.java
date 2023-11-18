@@ -65,12 +65,10 @@ public class SetContaUser extends HttpServlet {
 
 		        if (rs.next()) {
 		            proximoValorUser = rs.getInt(1);
-		            System.out.println("O próximo valor da sequência de tb_fin_usuario é: " + proximoValorUser);
 		        }
 
 		        if (rs2.next()) {
 		            proximoValorConta = rs2.getInt(1);
-		            System.out.println("O próximo valor da sequência de tb_fin_conta é: " + proximoValorConta);
 		        }
 		        
 		        // Agora, você pode executar as atualizações

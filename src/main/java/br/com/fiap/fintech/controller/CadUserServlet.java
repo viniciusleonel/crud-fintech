@@ -1,7 +1,6 @@
 package br.com.fiap.fintech.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -16,6 +15,7 @@ import br.com.fiap.fintech.dao.ContaDAO;
 import br.com.fiap.fintech.dao.UsuarioDAO;
 import br.com.fiap.fintech.exception.DBException;
 import br.com.fiap.fintech.factory.DAOFactory;
+import br.com.fiap.fintech.util.CriptografiaUtils;
 
 @WebServlet("/usuario")
 public class CadUserServlet extends HttpServlet {
@@ -67,9 +67,11 @@ public class CadUserServlet extends HttpServlet {
     
     private void excluir(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		int codigo = Integer.parseInt(request.getParameter("codigo"));
+		int codigoUser = Integer.parseInt(request.getParameter("codigo"));
+		int codigoConta = Integer.parseInt(request.getParameter("codigo"));
 		try {
-			dao.delete(codigo);
+			dao.delete(codigoUser);
+			contaDao.delete(codigoConta);
 			request.setAttribute("msg", "Usuário removido!");
 		} catch (DBException e) {
 			e.printStackTrace();
@@ -107,6 +109,8 @@ public class CadUserServlet extends HttpServlet {
 			String login = request.getParameter("login");
 			String email = request.getParameter("email");
 			String senha = request.getParameter("senha");
+			
+			senha = CriptografiaUtils.criptografar(senha);
 			
 			Usuario usuario = new Usuario(0, nome, cpf, login, email, senha);
 			Conta conta = new Conta (0,0,0, "Ativa");

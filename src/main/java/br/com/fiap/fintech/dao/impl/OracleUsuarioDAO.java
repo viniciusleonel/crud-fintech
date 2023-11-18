@@ -34,11 +34,7 @@ public class OracleUsuarioDAO implements UsuarioDAO{
                 
                 if (rs.next()) {
                     proximoValor = rs.getInt(1);
-                    System.out.println("O próximo valor da sequência é: " + proximoValor);
                 }
-
-                // Agora você pode usar a variável 'proximoValor' conforme necessário
-                // por exemplo, salvá-la em uma variável ou usá-la em outra parte do seu código.
             }
 			
 			stmt = conexao.prepareStatement(
@@ -53,9 +49,7 @@ public class OracleUsuarioDAO implements UsuarioDAO{
 			stmt.setString(5, usuario.getEmail());
 			stmt.setString(6, usuario.getSenha());
 			stmt.executeUpdate();
-			
-			System.out.println("Usuário " + usuario.getCodigo() + " registrado!");
-			
+						
 		}catch (SQLException e) {
 			e.printStackTrace();
 			throw new DBException("Erro ao cadastradar.");
@@ -121,10 +115,7 @@ public class OracleUsuarioDAO implements UsuarioDAO{
 						+ "WHERE CD_USUARIO = ? ");
 			stmt.setInt(1, cd);
 			stmt.executeUpdate();
-			
-			
-			System.out.println("Usuário " + cd + " removido!");
-			
+						
 		}catch (SQLException e) {
 			e.printStackTrace();
 			throw new DBException("Erro ao remover.");

@@ -1,8 +1,6 @@
 package br.com.fiap.fintech.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,8 +14,6 @@ import br.com.fiap.fintech.dao.ContaDAO;
 import br.com.fiap.fintech.dao.UsuarioDAO;
 import br.com.fiap.fintech.exception.DBException;
 import br.com.fiap.fintech.factory.DAOFactory;
-import br.com.fiap.fintech.sequencia.SequenciaUser;
-
 
 @WebServlet("/home")
 public class HomeServlet extends HttpServlet {
@@ -37,7 +33,6 @@ public class HomeServlet extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
-
 	}
 
 	
@@ -55,21 +50,11 @@ public class HomeServlet extends HttpServlet {
 //		case "excluir":
 //			excluir(request, response);
 //			break;
-//		}
+		}
 	}
-	}
-
+		
 	private void cadastrar(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		SequenciaUser novaSequencia = new SequenciaUser();
-		
-		List<Integer> listaCodUser = new ArrayList<>();
-		
-		listaCodUser = novaSequencia.novoCodigoUser(listaCodUser);
-		int cd_user = listaCodUser.get(listaCodUser.size() - 1);
-		
-		listaCodUser = novaSequencia.novoCodigoUser(listaCodUser);
-		int cd_conta = listaCodUser.get(listaCodUser.size() - 1);
 		
 		try{
 			String nome = request.getParameter("nome");
@@ -78,16 +63,17 @@ public class HomeServlet extends HttpServlet {
 			String email = request.getParameter("email");
 			String senha = request.getParameter("senha");
 			
-			Usuario usuario = new Usuario(cd_user, nome, cpf, login, email, senha);
-			Conta conta = new Conta (cd_conta,0,0, "Ativa");
+			Usuario usuario = new Usuario(0, nome, cpf, login, email, senha);
+			Conta conta = new Conta (0,0,0, "Ativa");
+			
+			usuario.setConta(conta);
+			conta.setCd_usuario(usuario);
 			
 			dao.insert(usuario);
 			contaDao.insert(conta);
-			
-			
-			
-			
+	
 			request.setAttribute("msg", "Usuário cadastrado!");
+			
 		}catch(DBException db) {
 			db.printStackTrace();
 			request.setAttribute("erro", "Erro ao cadastrar");
@@ -95,6 +81,9 @@ public class HomeServlet extends HttpServlet {
 			e.printStackTrace();
 			request.setAttribute("erro","Por favor, valide os dados");
 		}
-		request.getRequestDispatcher("cadastro-usuario.jsp").forward(request, response);
+		request.getRequestDispatcher("SetContaUser").forward(request, response);
 	}	
+		
+
+	
 }

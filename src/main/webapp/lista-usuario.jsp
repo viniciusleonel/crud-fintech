@@ -45,7 +45,8 @@
 						<button type="button" class="btn btn-danger btn-xs ms-1" 
 								data-bs-toggle="modal" 
 								data-bs-target="#excluirModal" 
-								onclick="codigoExcluir.value = ${u.codigo}">
+								onclick="codigoExcluir.value = ${u.codigo}"
+								onclick="codigoExcluir.value = ${u.conta.codigo}">
   							Excluir
 						</button>
 					</td>

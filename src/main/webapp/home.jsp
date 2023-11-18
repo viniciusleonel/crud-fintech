@@ -115,7 +115,7 @@
                                 <div class="mb-3">
                                     <label for="id-cpf" class="form-label fs-4">CPF</label>
                                     <input type="text" class="form-control form-area" name="cpf" id="id-cpf"
-                                        placeholder="123.456.789-10" required>
+                                        placeholder="12345678910" required>
                                 </div>
                                 
                                 <div class="mb-3">
