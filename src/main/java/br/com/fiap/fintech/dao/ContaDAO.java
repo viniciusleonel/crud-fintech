@@ -9,7 +9,7 @@ public interface ContaDAO {
 
 	void insert (Conta conta) throws DBException;
 		
-	void update (Conta conta) throws DBException;
+	void update (Conta conta, int cd_conta) throws DBException;
 	
 	void delete (int cd) throws DBException;
 	

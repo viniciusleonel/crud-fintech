@@ -10,7 +10,7 @@ public interface UsuarioDAO {
 
 	void insert (Usuario usuario) throws DBException;
 	
-	void update (Usuario usuario, int cd_conta) throws DBException;
+	void update (Usuario usuario, int cd_usuario) throws DBException;
 	
 	void delete (int cd) throws DBException;
 	
@@ -19,4 +19,5 @@ public interface UsuarioDAO {
 	Usuario getById(int cd);
 	
 	List<Usuario> getDetails();
+	
 }

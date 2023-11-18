@@ -16,21 +16,37 @@ import br.com.fiap.fintech.singleton.ConnectionManager;
 public class OracleUsuarioDAO implements UsuarioDAO{
 	
 	private Connection conexao;
-
+	
 	@Override
 	public void insert(Usuario usuario) throws DBException {
 		
 		PreparedStatement stmt = null;
+
+		int proximoValor = 0;
 		
 		try {
 			conexao = ConnectionManager.getInstance().getConnection();
+			String sql = "SELECT SQ_TB_FIN_USUARIO.NEXTVAL FROM DUAL";
+			
+            try (PreparedStatement pstmt = conexao.prepareStatement(sql)) {
+                ResultSet rs = pstmt.executeQuery();
+
+                
+                if (rs.next()) {
+                    proximoValor = rs.getInt(1);
+                    System.out.println("O próximo valor da sequência é: " + proximoValor);
+                }
+
+                // Agora você pode usar a variável 'proximoValor' conforme necessário
+                // por exemplo, salvá-la em uma variável ou usá-la em outra parte do seu código.
+            }
 			
 			stmt = conexao.prepareStatement(
 					"INSERT INTO TB_FIN_USUARIO "
 					+ "(CD_USUARIO, NM_USUARIO, CPF_USUARIO, LOGIN_USUARIO, "
 					+ "EMAIL_USUARIO, SENHA_USUARIO) " 
-						+ "VALUES (?, ?, ?, ?, ?, ? )");
-			stmt.setInt(1, usuario.getCodigo());
+						+ "VALUES (? , ?, ?, ?, ?, ? )");
+			stmt.setInt(1, proximoValor);
 			stmt.setString(2, usuario.getNome());
 			stmt.setString(3, usuario.getCpf());
 			stmt.setString(4, usuario.getLogin());
@@ -67,7 +83,7 @@ public class OracleUsuarioDAO implements UsuarioDAO{
 						+ "CPF_USUARIO = ?, "
 						+ "LOGIN_USUARIO = ?, "
 						+ "EMAIL_USUARIO = ?, "
-						+ "SENHA_USUARIO = ?,'"
+						+ "SENHA_USUARIO = ?,"
 						+ "CD_CONTA = ? "
 							+ "WHERE CD_USUARIO = ?";
 			stmt = conexao.prepareStatement(sql);
@@ -273,6 +289,5 @@ public class OracleUsuarioDAO implements UsuarioDAO{
 		}
 		
 	}
-	
-	
+
 }

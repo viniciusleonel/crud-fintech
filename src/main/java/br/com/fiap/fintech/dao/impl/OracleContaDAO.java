@@ -20,14 +20,30 @@ public class OracleContaDAO implements ContaDAO{
 	public void insert(Conta conta) throws DBException {
 		PreparedStatement stmt = null;
 
+		int proximoValor = 0;
+		
 		try {
 			conexao = ConnectionManager.getInstance().getConnection();
+			String sql = "SELECT SQ_TB_FIN_CONTA.NEXTVAL FROM DUAL";
+			
+            try (PreparedStatement pstmt = conexao.prepareStatement(sql)) {
+                ResultSet rs = pstmt.executeQuery();
+
+                
+                if (rs.next()) {
+                    proximoValor = rs.getInt(1);
+                    System.out.println("O próximo valor da sequência é: " + proximoValor);
+                }
+
+                // Agora você pode usar a variável 'proximoValor' conforme necessário
+                // por exemplo, salvá-la em uma variável ou usá-la em outra parte do seu código.
+            }
 			
 			stmt = conexao.prepareStatement(
 					"INSERT INTO TB_FIN_CONTA ("
 					+ "CD_CONTA, NUM_CONTA, SALDO_CONTA, STATUS_CONTA) " 
 					+ "VALUES (?, SQ_FIN_NUM_CONTA.NEXTVAL, ?, ? )");
-			stmt.setInt(1, conta.getCodigo());
+			stmt.setInt(1, proximoValor);
 			stmt.setDouble(2, conta.getSaldo());
 			stmt.setString(3, conta.getStatus());
 			stmt.executeUpdate();
@@ -49,7 +65,7 @@ public class OracleContaDAO implements ContaDAO{
 	}
 
 	@Override
-	public void update(Conta conta) throws DBException {
+	public void update(Conta conta, int cd_conta) throws DBException {
 		PreparedStatement stmt = null;
 
 		try {
@@ -60,11 +76,13 @@ public class OracleContaDAO implements ContaDAO{
 					+ "SET NUM_CONTA = ?, "
 					+ "SALDO_CONTA = ?, "
 					+ "STATUS_CONTA = ? "
+					+ "CD_USUARIO = ? "
 					+ "WHERE CD_CONTA = ?");
 			stmt.setInt(1, conta.getNum());
 			stmt.setDouble(2, conta.getSaldo());
 			stmt.setString(3, conta.getStatus());
 			stmt.setInt(4, conta.getCodigo());
+			stmt.setInt(5, cd_conta);
 			stmt.executeUpdate();
 			
 			System.out.println("Conta " + conta.getCodigo() + "  atualizada!");
@@ -191,7 +209,6 @@ public class OracleContaDAO implements ContaDAO{
 
 		try {
 			conexao = ConnectionManager.getInstance().getConnection();	
-			
 			
 			String sql = "UPDATE TB_FIN_CONTA "
 						+ "SET CD_USUARIO = ? "

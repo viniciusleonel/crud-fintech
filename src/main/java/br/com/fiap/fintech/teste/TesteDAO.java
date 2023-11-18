@@ -15,35 +15,21 @@ public class TesteDAO {
 
 	public static void main(String[] args) throws DBException {
 		
-		
-		SequenciaUser novaSequencia = new SequenciaUser();
-		
-		List<Integer> listaCodUser = new ArrayList<>();
-		listaCodUser = novaSequencia.novoCodigoUser(listaCodUser);
-		int cd_user = listaCodUser.get(listaCodUser.size() - 1);
-		listaCodUser = novaSequencia.novoCodigoUser(listaCodUser);
-		int cd_conta = listaCodUser.get(listaCodUser.size() - 1);
-		
-		
-		listaCodUser = novaSequencia.novoCodigoUser(listaCodUser);
-		int cd_user2 = listaCodUser.get(listaCodUser.size() - 1);
-		listaCodUser = novaSequencia.novoCodigoUser(listaCodUser);
-		int cd_conta2 = listaCodUser.get(listaCodUser.size() - 1);
         		
 		UsuarioDAO userDao = DAOFactory.getUsuarioDAO();
 		ContaDAO contaDao = DAOFactory.getContaDAO();
 		
-		Usuario nina = new Usuario(cd_user2, "Nina", "39160202858", "ninatheprincess", "nina@gmail.com", "123456");
+		Usuario nina = new Usuario(0, "Nina", "39160202858", "ninatheprincess", "nina@gmail.com", "123456");
 
-		Conta contaNina = new Conta (cd_conta2,0,0, "Ativada!");
+		Conta contaNina = new Conta (0,0,0, "Ativada!");
 		
 		nina.setConta(contaNina);
 		contaNina.setCd_usuario(nina);
-		userDao.insert(nina);
-		contaDao.insert(contaNina);
-		
-		userDao.setContaUsuario(cd_conta2, cd_user2);
-		contaDao.setUsuarioConta(cd_user2, cd_conta2);
+//		userDao.insert(nina);
+//		contaDao.insert(contaNina);
+//		
+//		userDao.setContaUsuario(cd_conta2, cd_user2);
+//		contaDao.setUsuarioConta(cd_user2, cd_conta2);
 		
 		
 		

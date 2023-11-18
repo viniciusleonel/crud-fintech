@@ -16,7 +16,6 @@ import br.com.fiap.fintech.dao.ContaDAO;
 import br.com.fiap.fintech.dao.UsuarioDAO;
 import br.com.fiap.fintech.exception.DBException;
 import br.com.fiap.fintech.factory.DAOFactory;
-import br.com.fiap.fintech.sequencia.SequenciaUser;
 
 @WebServlet("/usuario")
 public class CadUserServlet extends HttpServlet {
@@ -102,10 +101,6 @@ public class CadUserServlet extends HttpServlet {
 	private void cadastrar(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
-		SequenciaUser novaSequencia = new SequenciaUser();
-		
-		List<Integer> listaCodUser = new ArrayList<>();
-		
 		try{
 			String nome = request.getParameter("nome");
 			String cpf = request.getParameter("cpf");
@@ -113,25 +108,14 @@ public class CadUserServlet extends HttpServlet {
 			String email = request.getParameter("email");
 			String senha = request.getParameter("senha");
 			
-			listaCodUser = novaSequencia.novoCodigoUser(listaCodUser);
-			int cd_user = listaCodUser.get(listaCodUser.size() - 1);
-			cd_user++;
-			
-			listaCodUser = novaSequencia.novoCodigoUser(listaCodUser);
-			int cd_conta = listaCodUser.get(listaCodUser.size() - 1);
-			cd_conta++;
-			
-			Usuario usuario = new Usuario(cd_user, nome, cpf, login, email, senha);
-			Conta conta = new Conta (cd_conta,0,0, "Ativa");
+			Usuario usuario = new Usuario(0, nome, cpf, login, email, senha);
+			Conta conta = new Conta (0,0,0, "Ativa");
 			
 			usuario.setConta(conta);
 			conta.setCd_usuario(usuario);
 			
 			dao.insert(usuario);
 			contaDao.insert(conta);
-			
-			dao.setContaUsuario(cd_conta, cd_user);
-			contaDao.setUsuarioConta(cd_user, cd_conta);
 	
 			request.setAttribute("msg", "Usuário cadastrado!");
 			
@@ -142,7 +126,7 @@ public class CadUserServlet extends HttpServlet {
 			e.printStackTrace();
 			request.setAttribute("erro","Por favor, valide os dados");
 		}
-		request.getRequestDispatcher("cadastro-usuario.jsp").forward(request, response);
+		request.getRequestDispatcher("SetContaUser").forward(request, response);
 	}	
 	
 	private void editar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
