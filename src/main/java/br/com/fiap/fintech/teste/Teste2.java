@@ -24,7 +24,7 @@ public class Teste2 {
     		
     		System.out.println(receitaDao.getById(7).getCodigo());
     		
-    		ContaDAO contaDao = DAOFactory.getContaDAO();
+
     
     
     }

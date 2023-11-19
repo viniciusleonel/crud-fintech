@@ -117,7 +117,7 @@ public class UsuarioServlet extends HttpServlet {
     private void abrirFormCadastro(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
     	
-		request.getRequestDispatcher("cadastro-usuario.jsp").forward(request, response);
+		request.getRequestDispatcher("home.jsp").forward(request, response);
 	}
 
 	private void cadastrar(HttpServletRequest request, HttpServletResponse response)
@@ -141,21 +141,19 @@ public class UsuarioServlet extends HttpServlet {
 			dao.insert(usuario);
 			contaDao.insert(conta);
 	
-			request.setAttribute("msg", "Usuário cadastrado!");
+			request.setAttribute("msg", "Usuário cadastrado, efetue o login!");
 			
 			setContaUsuario(request,response);
 			
-			request.getRequestDispatcher("minha-conta.jsp").forward(request, response);
 		}catch(DBException db) {
 			db.printStackTrace();
 			request.setAttribute("erro", "Erro ao cadastrar");
-			request.getRequestDispatcher("home.jsp").forward(request, response);
+			
 		}catch(Exception e){
 			e.printStackTrace();
 			request.setAttribute("erro","Por favor, valide os dados");
-			request.getRequestDispatcher("home.jsp").forward(request, response);
 		}
-		request.getRequestDispatcher("minha-conta.jsp").forward(request, response);
+		request.getRequestDispatcher("home.jsp").forward(request, response);
 	}	
 	
 	private void editar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -248,7 +246,7 @@ public class UsuarioServlet extends HttpServlet {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		request.getRequestDispatcher("cadastro-usuario.jsp").forward(request, response);
+		request.getRequestDispatcher("home.jsp").forward(request, response);
 	}	
 
 }

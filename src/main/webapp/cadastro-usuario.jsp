@@ -12,12 +12,6 @@
 <%@ include file="menu.jsp" %>
 <div class="container">
 	<h1 class="mt-2">Cadastro de Usuário</h1>
-	<c:if test="${not empty msg }">
-		<div class="alert alert-success">${msg}</div>
-	</c:if>
-	<c:if test="${not empty erro }">
-		<div class="alert alert-danger">${erro}</div>
-	</c:if>
 	<form action="usuario" method="post">
 		<input type="hidden" value="cadastrar" name="acao">
 		<div class="form-group mt-1 pt-1">

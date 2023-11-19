@@ -32,6 +32,9 @@
             <div class="container my-5">
                 <h1 class="col-12 d-flex justify-content-center fs-1">Fintech</h1>
             </div>
+			<c:if test="${not empty msg }">
+				<div class="d-flex justify-content-center">${msg}</div>
+			</c:if>
 			<c:if test="${empty user }">
 			    <span class="navbar-text text-danger ms-3 d-flex justify-content-center" style="margin-right:10px" >
 			        ${erro }
