@@ -7,19 +7,20 @@ public class Investimento {
 	private int codigo;
 	private double valor;
 	private Calendar data;
-	private String categotia;
+	private String categoria;
 	private String descricao;
+	private Conta conta;
 	
 	public Investimento () {
 		super();
 	}
 
-	public Investimento(int codigo, double valor, Calendar data, String categotia, String descricao) {
+	public Investimento(int codigo, double valor, Calendar data, String categoria, String descricao) {
 		super();
 		this.codigo = codigo;
 		this.valor = valor;
 		this.data = data;
-		this.categotia = categotia;
+		this.categoria = categoria;
 		this.descricao = descricao;
 	}
 
@@ -47,12 +48,12 @@ public class Investimento {
 		this.data = data;
 	}
 
-	public String getCategotia() {
-		return categotia;
+	public String getCategoria() {
+		return categoria;
 	}
 
-	public void setCategotia(String categotia) {
-		this.categotia = categotia;
+	public void setCategoria(String categotia) {
+		this.categoria = categotia;
 	}
 
 	public String getDescricao() {
@@ -61,6 +62,14 @@ public class Investimento {
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
-	};
+	}
+
+	public Conta getConta() {
+		return conta;
+	}
+
+	public void setConta(Conta conta) {
+		this.conta = conta;
+	}
 	
 }

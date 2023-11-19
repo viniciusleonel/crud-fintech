@@ -91,6 +91,7 @@
 								        ${erro }
 								  	</span>
 								</c:if>
+								
                                 <div class="container d-flex justify-content-center my-5">
                                     <button type="submit" class="btn btn-primary bg-btn-blue col-6 btn-logar">
                                         Entrar
@@ -119,6 +120,11 @@
 
                             <form action="usuario" method="post">
 								<input type="hidden" value="cadastrar" name="acao">
+								<c:if test="${not empty erro }">
+									<span class="navbar-text text-danger d-flex" style="margin-right:10px" >
+								        ${erro }
+								  	</span>
+								</c:if>
                                 <div class="my-3">
                                     <label for="id-nome" class="form-label fs-4">Nome</label>
                                     <input type="text" class="form-control form-area" name="nome" id="id-nome"

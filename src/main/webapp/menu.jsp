@@ -13,6 +13,7 @@
 		    <li><a class="dropdown-item" href="cadastro-usuario.jsp">Cadastrar Usuário</a></li>
 		    <li><a class="dropdown-item" href="cadastro-receita.jsp">Cadastrar Receita</a></li>
 		    <li><a class="dropdown-item" href="cadastro-despesa.jsp">Cadastrar Despesa</a></li>
+		    <li><a class="dropdown-item" href="cadastro-investimento.jsp">Cadastrar Investimento</a></li>
 	    </ul>
   </div>
   
@@ -24,6 +25,7 @@
 		    <li><a class="dropdown-item" href="usuario?acao=listar">Listar Usuários</a></li>
 		    <li><a class="dropdown-item" href="receita?acao=listar">Listar Receitas</a></li>
 		    <li><a class="dropdown-item" href="despesa?acao=listar">Listar Despesas</a></li>
+		    <li><a class="dropdown-item" href="investimento?acao=listar">Listar Investimentos</a></li>
 	    </ul>
   </div>
 

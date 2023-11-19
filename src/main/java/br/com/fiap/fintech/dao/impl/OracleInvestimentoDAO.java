@@ -8,7 +8,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import br.com.fiap.fintech.bean.Conta;
 import br.com.fiap.fintech.bean.Investimento;
+import br.com.fiap.fintech.bean.Receita;
 import br.com.fiap.fintech.dao.InvestimentoDAO;
 import br.com.fiap.fintech.exception.DBException;
 import br.com.fiap.fintech.singleton.ConnectionManager;
@@ -21,20 +23,33 @@ public class OracleInvestimentoDAO implements InvestimentoDAO{
 	public void insert(Investimento investimento) throws DBException {
 		PreparedStatement stmt = null;
 
+		int proximoValor = 0;
+		
 		try {
 			conexao = ConnectionManager.getInstance().getConnection();
+			String sql = "SELECT SQ_TB_FIN_investimento.NEXTVAL FROM DUAL";
+			
+            try (PreparedStatement pstmt = conexao.prepareStatement(sql)) {
+                ResultSet rs = pstmt.executeQuery();
+
+                
+                if (rs.next()) {
+                    proximoValor = rs.getInt(1);
+                }
+            }
 			
 			stmt = conexao.prepareStatement(
-					"INSERT INTO TB_FIN_INVESTIMENTO (CD_INVESTIMENTO, VL_INVESTIMENTO, DT_DESPESA, CATEGORIA_DESPESA, DESCRICAO_DESPESA) " 
-					+ "VALUES (SQ_TB_FIN_INVESTIMENTO.NEXTVAL, ?, ?, ?, ? )");
-			stmt.setDouble(1, investimento.getValor());
+					"INSERT INTO TB_FIN_investimento (CD_investimento, VL_investimento, DT_investimento, CATEGORIA_investimento, DESCRICAO_investimento) " 
+					+ "VALUES (?, ?, ?, ?, ? )");
+			stmt.setInt(1, proximoValor);
+			stmt.setDouble(2, investimento.getValor());
 			java.sql.Date data = new java.sql.Date(investimento.getData().getTimeInMillis());
-			stmt.setDate(2, data);
-			stmt.setString(3, investimento.getCategotia());
-			stmt.setString(4, investimento.getDescricao());
+			stmt.setDate(3, data);
+			stmt.setString(4, investimento.getCategoria());
+			stmt.setString(5, investimento.getDescricao());
 			stmt.executeUpdate();
 			
-			System.out.println("Investimento " + investimento.getCodigo() + " registrado!");
+			System.out.println("Investimento " + investimento.getCategoria() + " registrado!");
 			
 		}catch (SQLException e) {
 			e.printStackTrace();
@@ -67,12 +82,12 @@ public class OracleInvestimentoDAO implements InvestimentoDAO{
 			stmt.setDouble(1, investimento.getValor());
 			java.sql.Date data = new java.sql.Date(investimento.getData().getTimeInMillis());
 			stmt.setDate(2, data);
-			stmt.setString(3, investimento.getCategotia());
+			stmt.setString(3, investimento.getCategoria());
 			stmt.setString(4, investimento.getDescricao());
 			stmt.setInt(5, investimento.getCodigo());
 			stmt.executeUpdate();
 			
-			System.out.println("Investimento " + investimento.getCodigo() + "  atualizado!");
+			System.out.println("Investimento " + investimento.getCategoria() + "  atualizado!");
 			
 		}catch (SQLException e) {
 			e.printStackTrace();
@@ -167,7 +182,16 @@ public class OracleInvestimentoDAO implements InvestimentoDAO{
 		try {
 			conexao = ConnectionManager.getInstance().getConnection();
 			
-			stmt = conexao.prepareStatement("SELECT * FROM TB_FIN_INVESTIMENTO ORDER BY CD_INVESTIMENTO ASC");
+			stmt = conexao.prepareStatement("SELECT "
+					+ "TB_FIN_INVESTIMENTO.CD_INVESTIMENTO, "
+					+ "TB_FIN_INVESTIMENTO.VL_INVESTIMENTO, "
+					+ "TB_FIN_INVESTIMENTO.DT_INVESTIMENTO, "
+					+ "TB_FIN_INVESTIMENTO.CATEGORIA_INVESTIMENTO, "
+					+ "TB_FIN_INVESTIMENTO.DESCRICAO_INVESTIMENTO, "
+					+ "TB_FIN_CONTA.NUM_CONTA, "
+					+ "TB_FIN_CONTA.SALDO_CONTA "
+				+ "FROM TB_FIN_INVESTIMENTO "
+				+ "JOIN TB_FIN_CONTA ON TB_FIN_INVESTIMENTO.CD_CONTA = TB_FIN_CONTA.CD_CONTA");
 			rs = stmt.executeQuery();
 			
 			while (rs.next()) {
@@ -182,8 +206,14 @@ public class OracleInvestimentoDAO implements InvestimentoDAO{
 			    String categoria_investimento = rs.getString("CATEGORIA_INVESTIMENTO");
 			    String descricao_investimento = rs.getString("DESCRICAO_INVESTIMENTO");
 			    
-			    Investimento investimento  = new Investimento(cd_investimento, vl_investimento, dt_investimento, categoria_investimento, descricao_investimento);
-				
+			    int num_conta = rs.getInt("NUM_CONTA");
+			    double saldo_conta = rs.getDouble("SALDO_CONTA");
+			    
+			    Investimento investimento = new Investimento(cd_investimento, vl_investimento, dt_investimento, categoria_investimento, descricao_investimento);
+			    Conta conta = new Conta ();
+			    conta.setNum(num_conta);
+			    conta.setSaldo(saldo_conta);
+			    investimento.setConta(conta);
 				lista.add(investimento);
 			}
 			
