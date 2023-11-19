@@ -18,8 +18,8 @@
 	<c:if test="${not empty erro }">
 		<div class="alert alert-danger">${erro}</div>
 	</c:if>
-	<form action="usuario" method="post">
-		<input type="hidden" value="cadastrarReceita" name="acao">
+	<form action="receita" method="post">
+		<input type="hidden" value="cadastrar" name="acao">
 		<div class="form-group mt-1 pt-1">
 			<label for="id-valor">Valor</label>
 			<input type="text" name="valor" id="id-valor" class="form-control">

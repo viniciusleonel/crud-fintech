@@ -61,9 +61,6 @@ public class CadUserServlet extends HttpServlet {
 		case "cadastrar":
 			cadastrar(request, response);
 			break;
-		case "cadastrarReceita":
-			cadastrarReceita(request, response);
-			break;	
 		case "editar":
 			editar(request,response);
 			break;
@@ -125,35 +122,6 @@ public class CadUserServlet extends HttpServlet {
 			request.setAttribute("erro","Por favor, valide os dados");
 		}
 		request.getRequestDispatcher("SetContaUser").forward(request, response);
-	}	
-	
-	private void cadastrarReceita(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		
-		try{
-//			int codigo = Integer.parseInt(request.getParameter("codigo"));
-			double valor = Double.parseDouble(request.getParameter("valor"));
-			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-			Calendar data = Calendar.getInstance();
-			data.setTime(format.parse(request.getParameter("data")));
-			String categoria = request.getParameter("categoria");
-			String descricao = request.getParameter("descricao");
-			
-			
-			Receita receita = new Receita(0, valor, data, categoria, descricao);
-			
-			receitaDao.insert(receita);
-	
-			request.setAttribute("msg", "Receita cadastrada!");
-			
-		}catch(DBException db) {
-			db.printStackTrace();
-			request.setAttribute("erro", "Erro ao cadastrar");
-		}catch(Exception e){
-			e.printStackTrace();
-			request.setAttribute("erro","Por favor, valide os dados");
-		}
-		request.getRequestDispatcher("cadastro-receita.jsp").forward(request, response);
 	}	
 	
 	private void editar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
