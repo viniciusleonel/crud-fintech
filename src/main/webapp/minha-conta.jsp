@@ -2,6 +2,10 @@
     pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+
+
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -13,7 +17,7 @@
 
 <%@ include file="menu.jsp" %>
 	<div class="container">
-		<h1>Usuário</h1>
+		<h1>Meus Dados</h1>
 		<c:if test="${not empty msg }">
 			<div class="alert alert-success">${msg}</div>
 		</c:if>
@@ -29,29 +33,27 @@
 				<th>Senha</th>
 				<th></th>
 			</tr>
-			<c:forEach items="${usuarios}" var="u">
-				<tr>
-					<td>${u.nome}</td>
-					<td>${u.cpf}</td>
-					<td>${u.login}</td>
-					<td>${user}</td>
-					<td>${u.senha}</td>
-					<td>
+			    <tr>
+			        <td>${nome}</td>
+			        <td>${cpf}</td>
+			        <td>${login}</td>
+			        <td>${user}</td>
+			        <td>${senha}</td>
+			        <td>
 						<c:url value="usuario" var="link">
-							<c:param name="acao" value="abrir-form-edicao"/>
-							<c:param name="codigo" value="${u.codigo}"/>
+							<c:param name="acao" value="minha-conta"/>
+							<c:param name="codigo" value="${id}"/>
 						</c:url>
 						<a href="${link}" class="btn btn-primary btn-xs me-1">Editar</a>
 						<button type="button" class="btn btn-danger btn-xs ms-1" 
 								data-bs-toggle="modal" 
 								data-bs-target="#excluirModal" 
-								onclick="codigoExcluir.value = ${u.codigo}"
-								onclick="codigoExcluir.value = ${u.conta.codigo}">
+								onclick="codigoExcluir.value = ${id}"
+								onclick="codigoExcluir.value = ${conta}">
   							Excluir
 						</button>
 					</td>
 				</tr>
-			</c:forEach>
 		</table>
 	</div>
 	
@@ -66,6 +68,8 @@
         </button>
       </div>
       <div class="modal-body">
+      			Você irá voltar à página inicial e perderá seus dados!
+      			<br>
         		Deseja realmente excluir o usuário?
       </div>
       <div class="modal-footer">

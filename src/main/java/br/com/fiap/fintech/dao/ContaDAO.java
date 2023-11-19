@@ -18,4 +18,6 @@ public interface ContaDAO {
 	Conta getById(int cd);
 	
 	List<Conta> getAll();
+
+	Conta getByUser(int cd);
 }

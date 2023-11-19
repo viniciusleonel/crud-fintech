@@ -12,10 +12,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import br.com.fiap.fintech.bean.Conta;
 import br.com.fiap.fintech.bean.Usuario;
 import br.com.fiap.fintech.dao.ContaDAO;
+import br.com.fiap.fintech.dao.DespesaDAO;
+import br.com.fiap.fintech.dao.InvestimentoDAO;
+import br.com.fiap.fintech.dao.ReceitaDAO;
 import br.com.fiap.fintech.dao.UsuarioDAO;
 import br.com.fiap.fintech.exception.DBException;
 import br.com.fiap.fintech.factory.DAOFactory;
@@ -28,6 +32,9 @@ public class UsuarioServlet extends HttpServlet {
        
     private UsuarioDAO dao;
     private ContaDAO contaDao;
+    private ReceitaDAO receitaDao;
+    private DespesaDAO despesaDao;
+    private InvestimentoDAO investimentoDAO;
     
     private Connection conexao;
     
@@ -36,15 +43,21 @@ public class UsuarioServlet extends HttpServlet {
     	super.init();
     	dao = DAOFactory.getUsuarioDAO();
     	contaDao = DAOFactory.getContaDAO();
+    	receitaDao = DAOFactory.getReceitaDAO();
+    	despesaDao = DAOFactory.getDespesaDAO();
+    	investimentoDAO = DAOFactory.getInvestimentoDAO();
     	}
 
     @Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	String acao = request.getParameter("acao");
-		
+    	
     	switch (acao) {
 		case "listar":
 			listar(request, response);
+			break;
+		case "minha-conta":
+			minhaConta(request, response);
 			break;
 		case "abrir-form-edicao":
 			abrirFormEdicao(request, response);
@@ -75,6 +88,21 @@ public class UsuarioServlet extends HttpServlet {
     private void listar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		List<Usuario> lista = dao.getDetails();	
     	request.setAttribute("usuarios", lista);
+    	request.getRequestDispatcher("lista-usuario.jsp").forward(request, response);
+	}
+    
+    private void minhaConta(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	HttpSession session = request.getSession();
+    	int codigoUsuario = (int) session.getAttribute("id");
+    	Usuario usuario = new Usuario(
+    			codigoUsuario,
+    			dao.getById(codigoUsuario).getNome(),
+    			dao.getById(codigoUsuario).getCpf(),
+    			dao.getById(codigoUsuario).getLogin(),
+    			dao.getById(codigoUsuario).getEmail(),
+    			dao.getById(codigoUsuario).getSenha());
+    	
+    	request.setAttribute("usuario", usuario);
     	request.getRequestDispatcher("lista-usuario.jsp").forward(request, response);
 	}
     
@@ -116,14 +144,18 @@ public class UsuarioServlet extends HttpServlet {
 			request.setAttribute("msg", "Usuário cadastrado!");
 			
 			setContaUsuario(request,response);
+			
+			request.getRequestDispatcher("minha-conta.jsp").forward(request, response);
 		}catch(DBException db) {
 			db.printStackTrace();
 			request.setAttribute("erro", "Erro ao cadastrar");
+			request.getRequestDispatcher("home.jsp").forward(request, response);
 		}catch(Exception e){
 			e.printStackTrace();
 			request.setAttribute("erro","Por favor, valide os dados");
+			request.getRequestDispatcher("home.jsp").forward(request, response);
 		}
-		request.getRequestDispatcher("cadastro-usuario.jsp").forward(request, response);
+		request.getRequestDispatcher("minha-conta.jsp").forward(request, response);
 	}	
 	
 	private void editar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -135,6 +167,7 @@ public class UsuarioServlet extends HttpServlet {
 			String email = request.getParameter("email");
 			String senha = request.getParameter("senha");
 			
+			senha = CriptografiaUtils.criptografar(senha);	
 			
 			Usuario usuario = new Usuario(codigo, nome, cpf, login, email, senha); 
 			dao.update(usuario, codigo);
@@ -153,16 +186,20 @@ public class UsuarioServlet extends HttpServlet {
 	private void excluir(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		int codigoUser = Integer.parseInt(request.getParameter("codigo"));
+		
+		HttpSession session = request.getSession();
+		int idConta = (int) session.getAttribute("idConta");
 		try {
-			dao.delete(codigoUser);
+			receitaDao.autoDelete(idConta);
+			despesaDao.autoDelete(idConta);
+			investimentoDAO.autoDelete(idConta);
 			contaDao.delete(codigoUser);
-			request.setAttribute("msg", "Usuário removido!");
+			dao.delete(codigoUser);
+			request.getRequestDispatcher("home.jsp").forward(request, response);
 		} catch (DBException e) {
 			e.printStackTrace();
 			request.setAttribute("erro", "Erro ao atualizar");
-		}
-		listar(request,response);
-		
+		}		
 	}
 
 	protected void setContaUsuario(HttpServletRequest request, HttpServletResponse response) 
@@ -213,8 +250,5 @@ public class UsuarioServlet extends HttpServlet {
 		}
 		request.getRequestDispatcher("cadastro-usuario.jsp").forward(request, response);
 	}	
-	
-	
-	
-	
+
 }

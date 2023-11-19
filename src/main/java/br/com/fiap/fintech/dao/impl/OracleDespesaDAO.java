@@ -131,6 +131,35 @@ public class OracleDespesaDAO implements DespesaDAO{
 		}
 		
 	}
+	
+	@Override
+	public void autoDelete(int cd) throws DBException {
+		PreparedStatement stmt = null;
+
+		try {
+			conexao = ConnectionManager.getInstance().getConnection();
+			
+			stmt = conexao.prepareStatement(
+					"DELETE FROM TB_FIN_DESPESA "
+						+ "WHERE CD_CONTA = ? ");
+			stmt.setInt(1, cd);
+			stmt.executeUpdate();
+			
+			System.out.println("Receita " + cd + " removida!");
+			
+		}catch (SQLException e) {
+			e.printStackTrace();
+			throw new DBException("Erro ao remover.");
+		}finally {
+			try {
+				stmt.close();
+				conexao.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+	}
 
 	@Override
 	public Despesa getById(int cd) {

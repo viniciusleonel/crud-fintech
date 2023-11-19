@@ -84,7 +84,7 @@
                                 <div class="mb-3">
                                     <label for="id-senha" class="form-label fs-4">Senha</label>
                                     <input type="password" class="form-control form-area" name="senha" id="id-senha"
-                                        placeholder="******" required>
+                                        placeholder="123456" required>
                                 </div>
 								<c:if test="${empty user }">
 								    <span class="navbar-text text-danger d-flex" style="margin-right:10px" >
@@ -128,7 +128,7 @@
                                 <div class="my-3">
                                     <label for="id-nome" class="form-label fs-4">Nome</label>
                                     <input type="text" class="form-control form-area" name="nome" id="id-nome"
-                                        placeholder="Vinícius Leonel" required>
+                                        placeholder="Fiap" required>
                                 </div>
 
                                 <div class="mb-3">
@@ -140,7 +140,7 @@
                                 <div class="mb-3">
                                     <label for="id-login" class="form-label fs-4">Login</label>
                                     <input type="text" class="form-control form-area" name="login" id="id-login"
-                                        placeholder="viniciusleonel" required>
+                                        placeholder="teste.fiap" required>
                                 </div>
                                 
                                 <div class="mb-3">
@@ -152,7 +152,7 @@
                                 <div class="mb-3">
                                     <label for="id-conta" class="form-label fs-4">Senha</label>
                                     <input type="password" class="form-control form-area" name="senha" id="id-conta"
-                                        placeholder="******" minlength="4" maxlength="8" required>
+                                        placeholder="123456" minlength="4" maxlength="8" required>
                                 </div>
 
                                 <div class="container d-flex justify-content-center my-5">

@@ -16,4 +16,6 @@ public interface DespesaDAO {
 	Despesa getById(int cd);
 	
 	List<Despesa> getAll();
+
+	void autoDelete(int cd) throws DBException;
 }

@@ -21,5 +21,7 @@ public interface UsuarioDAO {
 	Usuario getById(int cd);
 	
 	List<Usuario> getDetails();
+
+	int getCodigo(Usuario usuario);
 	
 }

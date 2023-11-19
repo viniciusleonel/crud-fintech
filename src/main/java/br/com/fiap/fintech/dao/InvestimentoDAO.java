@@ -16,4 +16,6 @@ public interface InvestimentoDAO {
 	Investimento getById(int cd);
 	
 	List<Investimento> getAll();
+
+	void autoDelete(int cd) throws DBException;
 }

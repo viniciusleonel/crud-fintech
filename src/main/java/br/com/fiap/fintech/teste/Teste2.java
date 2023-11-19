@@ -20,7 +20,11 @@ public class Teste2 {
     		
     		Receita receita = new Receita(0, 2500, Calendar.getInstance(), "comida", "teste");
     	
-    		receitaDao.insert(receita);
+//    		receitaDao.insert(receita);
+    		
+    		System.out.println(receitaDao.getById(7).getCodigo());
+    		
+    		ContaDAO contaDao = DAOFactory.getContaDAO();
     
     
     }

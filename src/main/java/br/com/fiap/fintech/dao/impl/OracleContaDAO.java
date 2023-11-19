@@ -155,6 +155,42 @@ public class OracleContaDAO implements ContaDAO{
 		}
 		return conta;
 	}
+	
+	@Override
+	public Conta getByUser(int cd) {
+		PreparedStatement stmt = null;
+		Conta conta = null;
+		ResultSet rs = null;
+
+		try {
+			conexao = ConnectionManager.getInstance().getConnection();
+			
+			stmt = conexao.prepareStatement("SELECT * FROM TB_FIN_CONTA WHERE CD_USUARIO = ?");
+		    stmt.setInt(1, cd);
+		    rs = stmt.executeQuery();
+		    
+		    if (rs.next()) {
+		    	int cd_conta = rs.getInt("CD_CONTA");
+		    	int num_conta = rs.getInt("NUM_CONTA");
+		    	double saldo_conta = rs.getDouble("SALDO_CONTA");
+			    String status_conta = rs.getString("STATUS_CONTA");
+			    
+			    conta = new Conta(cd_conta, num_conta, saldo_conta, status_conta);
+		    }
+			
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				stmt.close();
+				rs.close();
+				conexao.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return conta;
+	}
 
 	@Override
 	public List<Conta> getAll() {

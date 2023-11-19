@@ -10,7 +10,6 @@
 	    Cadastrar
 	</button>
 		<ul class="dropdown-menu">
-		    <li><a class="dropdown-item" href="cadastro-usuario.jsp">Cadastrar Usuário</a></li>
 		    <li><a class="dropdown-item" href="cadastro-receita.jsp">Cadastrar Receita</a></li>
 		    <li><a class="dropdown-item" href="cadastro-despesa.jsp">Cadastrar Despesa</a></li>
 		    <li><a class="dropdown-item" href="cadastro-investimento.jsp">Cadastrar Investimento</a></li>
@@ -22,7 +21,6 @@
 	    Listar
 	</button>
 		<ul class="dropdown-menu">
-		    <li><a class="dropdown-item" href="usuario?acao=listar">Listar Usuários</a></li>
 		    <li><a class="dropdown-item" href="receita?acao=listar">Listar Receitas</a></li>
 		    <li><a class="dropdown-item" href="despesa?acao=listar">Listar Despesas</a></li>
 		    <li><a class="dropdown-item" href="investimento?acao=listar">Listar Investimentos</a></li>
@@ -31,18 +29,14 @@
 
 
   <div class="collapse navbar-collapse container-fluid d-flex justify-content-end" id="navbarSupportedContent">
-    <c:if test="${empty user }">
-	    
-	    <form class="form-inline my-2 my-sm-1 d-flex " action="login" method="post">
-    	  <input class="form-control my-2 my-sm-1 me-2" type="text" name="email" placeholder="E-mail">
-	      <input class="form-control my-2 my-sm-1 me-2" type="password" name="senha" placeholder="Senha">
-	      <button class="btn btn-primary bg-btn-dark my-2 my-2 my-sm-1" type="submit">Entrar</button>
-	    </form>
-    </c:if>
-    a
+    
     <c:if test="${not empty user }">
    		<a href="minha-conta.jsp" class="text-decoration-none me-2 " >
+   			${idConta }
+   			${conta }
     		${user }
+    		${id}
+    		${nome }
     		<a href="login" class="btn btn-outline-primary my-2 my-sm-0 text-white">Sair</a>
 	  	</a>	
     </c:if>	

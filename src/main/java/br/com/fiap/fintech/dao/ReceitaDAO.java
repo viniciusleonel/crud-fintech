@@ -16,4 +16,6 @@ public interface ReceitaDAO {
 	Receita getById(int cd);
 	
 	List<Receita> getAll();
+
+	void autoDelete(int cd) throws DBException;
 }

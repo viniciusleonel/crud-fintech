@@ -69,7 +69,7 @@
         		Deseja realmente excluir o usuário?
       </div>
       <div class="modal-footer">
-      	<form action="usuario" method="post">
+      	<form action="login" method="get">
       		<input type="hidden" name="acao" value="excluir">
       		<input type="hidden" name="codigo" id="codigoExcluir">
 	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>

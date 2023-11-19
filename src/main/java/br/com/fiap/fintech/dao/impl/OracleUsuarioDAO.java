@@ -12,6 +12,7 @@ import br.com.fiap.fintech.bean.Usuario;
 import br.com.fiap.fintech.dao.UsuarioDAO;
 import br.com.fiap.fintech.exception.DBException;
 import br.com.fiap.fintech.singleton.ConnectionManager;
+import br.com.fiap.fintech.util.CriptografiaUtils;
 
 public class OracleUsuarioDAO implements UsuarioDAO{
 	
@@ -29,6 +30,7 @@ public class OracleUsuarioDAO implements UsuarioDAO{
 			rs = stmt.executeQuery();
 
 			if (rs.next()){
+				
 				return true;
 			}
 			
@@ -44,6 +46,37 @@ public class OracleUsuarioDAO implements UsuarioDAO{
 			}
 		}
 		return false;
+	}
+	
+	@Override
+	public int getCodigo(Usuario usuario) {
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		try {
+			conexao = ConnectionManager.getInstance().getConnection();
+			stmt = conexao.prepareStatement("SELECT * FROM TB_FIN_USUARIO WHERE EMAIL_USUARIO = ? AND SENHA_USUARIO = ?");
+			stmt.setString(1, usuario.getEmail());
+			stmt.setString(2, usuario.getSenha());
+			rs = stmt.executeQuery();
+
+			if (rs.next()){
+				int cd_usuario = rs.getInt("CD_USUARIO");
+				 
+				return cd_usuario;
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				stmt.close();
+				rs.close();
+				conexao.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return -1;
 	}
 	
 	@Override
@@ -252,7 +285,8 @@ public class OracleUsuarioDAO implements UsuarioDAO{
 				    String senha_usuario = rs.getString("SENHA_USUARIO");
 				    int num_conta = rs.getInt("NUM_CONTA");
 				    double saldo_conta = rs.getDouble("SALDO_CONTA");
-
+				    
+				    senha_usuario = CriptografiaUtils.criptografar(senha_usuario);
 				    
 				    Usuario usuario = new Usuario(
 				    		cd_usuario, nm_usuario, cpf_usuario, login_usuario, 
@@ -267,6 +301,8 @@ public class OracleUsuarioDAO implements UsuarioDAO{
 				}
 				
 			}catch (SQLException e) {
+				e.printStackTrace();
+			} catch (Exception e) {
 				e.printStackTrace();
 			}finally {
 				try {
