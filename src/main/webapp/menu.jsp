@@ -22,7 +22,7 @@
 	</button>
 		<ul class="dropdown-menu">
 		    <li><a class="dropdown-item" href="usuario?acao=listar">Listar Usuários</a></li>
-		    <li><a class="dropdown-item" href="#">Another action</a></li>
+		    <li><a class="dropdown-item" href="receita?acao=listar">Listar Receitas</a></li>
 		    <li><a class="dropdown-item" href="#">Something else here</a></li>
 	    </ul>
   </div>

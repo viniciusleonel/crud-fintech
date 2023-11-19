@@ -27,7 +27,6 @@ public class CadUserServlet extends HttpServlet {
        
     private UsuarioDAO dao;
     private ContaDAO contaDao;
-    private ReceitaDAO receitaDao;
     
     @Override
     public void init() throws ServletException{

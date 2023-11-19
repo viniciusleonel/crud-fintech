@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import br.com.fiap.fintech.bean.Conta;
 import br.com.fiap.fintech.bean.Receita;
 import br.com.fiap.fintech.dao.ReceitaDAO;
 import br.com.fiap.fintech.exception.DBException;
@@ -43,7 +44,7 @@ public class OracleReceitaDAO implements ReceitaDAO{
 			stmt.setDouble(2, receita.getValor());
 			java.sql.Date data = new java.sql.Date(receita.getData().getTimeInMillis());
 			stmt.setDate(3, data);
-			stmt.setString(4, receita.getCategotia());
+			stmt.setString(4, receita.getCategoria());
 			stmt.setString(5, receita.getDescricao());
 			stmt.executeUpdate();
 			
@@ -80,7 +81,7 @@ public class OracleReceitaDAO implements ReceitaDAO{
 			stmt.setDouble(1, receita.getValor());
 			java.sql.Date data = new java.sql.Date(receita.getData().getTimeInMillis());
 			stmt.setDate(2, data);
-			stmt.setString(3, receita.getCategotia());
+			stmt.setString(3, receita.getCategoria());
 			stmt.setString(4, receita.getDescricao());
 			stmt.setInt(5, receita.getCodigo());
 			stmt.executeUpdate();
@@ -180,7 +181,16 @@ public class OracleReceitaDAO implements ReceitaDAO{
 		try {
 			conexao = ConnectionManager.getInstance().getConnection();
 			
-			stmt = conexao.prepareStatement("SELECT * FROM TB_FIN_RECEITA ORDER BY CD_RECEITA ASC");
+			stmt = conexao.prepareStatement("SELECT "
+					+ "TB_FIN_RECEITA.CD_RECEITA, "
+					+ "TB_FIN_RECEITA.VL_RECEITA, "
+					+ "TB_FIN_RECEITA.DT_RECEITA, "
+					+ "TB_FIN_RECEITA.CATEGORIA_RECEITA, "
+					+ "TB_FIN_RECEITA.DESCRICAO_RECEITA, "
+					+ "TB_FIN_CONTA.NUM_CONTA, "
+					+ "TB_FIN_CONTA.SALDO_CONTA "
+				+ "FROM TB_FIN_RECEITA "
+				+ "JOIN TB_FIN_CONTA ON TB_FIN_RECEITA.CD_CONTA = TB_FIN_CONTA.CD_CONTA");
 			rs = stmt.executeQuery();
 			
 			while (rs.next()) {
@@ -195,8 +205,14 @@ public class OracleReceitaDAO implements ReceitaDAO{
 			    String categoria_receita = rs.getString("CATEGORIA_RECEITA");
 			    String descricao_receita = rs.getString("DESCRICAO_RECEITA");
 			    
+			    int num_conta = rs.getInt("NUM_CONTA");
+			    double saldo_conta = rs.getDouble("SALDO_CONTA");
+			    
 			    Receita receita = new Receita(cd_receita, vl_receita, dt_receita, categoria_receita, descricao_receita);
-				
+			    Conta conta = new Conta ();
+			    conta.setNum(num_conta);
+			    conta.setSaldo(saldo_conta);
+			    receita.setConta(conta);
 				lista.add(receita);
 			}
 			
