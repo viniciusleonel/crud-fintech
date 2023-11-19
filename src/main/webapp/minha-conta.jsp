@@ -10,7 +10,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Lista de Usuários</title>
+<title>Minha Conta</title>
 <%@ include file="header.jsp" %>
 </head>
 <body>
@@ -41,7 +41,7 @@
 			        <td>${senha}</td>
 			        <td>
 						<c:url value="usuario" var="link">
-							<c:param name="acao" value="minha-conta"/>
+							<c:param name="acao" value="abrir-form-edicao"/>
 							<c:param name="codigo" value="${id}"/>
 						</c:url>
 						<a href="${link}" class="btn btn-primary btn-xs me-1">Editar</a>

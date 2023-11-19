@@ -18,4 +18,6 @@ public interface InvestimentoDAO {
 	List<Investimento> getAll();
 
 	void autoDelete(int cd) throws DBException;
+
+	double calcularTotal(List<Investimento> investimentos);
 }

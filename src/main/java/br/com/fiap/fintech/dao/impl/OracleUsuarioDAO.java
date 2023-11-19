@@ -49,6 +49,41 @@ public class OracleUsuarioDAO implements UsuarioDAO{
 	}
 	
 	@Override
+	public boolean validarCadastro(Usuario usuario) {
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		try {
+			conexao = ConnectionManager.getInstance().getConnection();
+			stmt = conexao.prepareStatement(""
+					+ "select * from TB_FIN_USUARIO "
+						+ "where cpf_usuario = ? "
+							+ "and login_usuario = ? "
+							+ "and email_usuario = ?");
+			stmt.setString(1, usuario.getCpf());
+			stmt.setString(2, usuario.getLogin());
+			stmt.setString(2, usuario.getEmail());
+			rs = stmt.executeQuery();
+
+			if (rs.next()){
+				
+				return true;
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				stmt.close();
+				rs.close();
+				conexao.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
+	
+	@Override
 	public int getCodigo(Usuario usuario) {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;

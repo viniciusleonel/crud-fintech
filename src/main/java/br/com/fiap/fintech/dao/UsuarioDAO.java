@@ -23,5 +23,7 @@ public interface UsuarioDAO {
 	List<Usuario> getDetails();
 
 	int getCodigo(Usuario usuario);
+
+	boolean validarCadastro(Usuario usuario);
 	
 }

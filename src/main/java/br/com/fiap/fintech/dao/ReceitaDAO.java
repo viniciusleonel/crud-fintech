@@ -18,4 +18,6 @@ public interface ReceitaDAO {
 	List<Receita> getAll();
 
 	void autoDelete(int cd) throws DBException;
+
+	double calcularTotal(List<Receita> lista);
 }

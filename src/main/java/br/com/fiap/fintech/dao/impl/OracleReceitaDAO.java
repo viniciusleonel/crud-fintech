@@ -258,4 +258,15 @@ public class OracleReceitaDAO implements ReceitaDAO{
 		}
 		return lista;
 	}
+	
+	@Override
+	public double calcularTotal(List<Receita> receitas) {
+        double total = 0.0;
+        
+        for (Receita receita : receitas) {
+            total += receita.getValor();
+        }
+        
+        return total;
+    }
 }

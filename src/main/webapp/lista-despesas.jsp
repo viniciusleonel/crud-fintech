@@ -14,6 +14,7 @@
 <%@ include file="menu.jsp" %>
 	<div class="container">
 		<h1>Despesas</h1>
+		<h3>Total:  <fmt:formatNumber value="${totalDespesas}" type="currency" currencyCode="BRL" /> </h3>
 		<c:if test="${not empty msg }">
 			<div class="alert alert-success">${msg}</div>
 		</c:if>

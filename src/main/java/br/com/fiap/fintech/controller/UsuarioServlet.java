@@ -88,7 +88,7 @@ public class UsuarioServlet extends HttpServlet {
     private void listar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		List<Usuario> lista = dao.getDetails();	
     	request.setAttribute("usuarios", lista);
-    	request.getRequestDispatcher("lista-usuario.jsp").forward(request, response);
+    	request.getRequestDispatcher("minha-conta.jsp").forward(request, response);
 	}
     
     private void minhaConta(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -122,8 +122,9 @@ public class UsuarioServlet extends HttpServlet {
 
 	private void cadastrar(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
+		  
 		try{
+			
 			String nome = request.getParameter("nome");
 			String cpf = request.getParameter("cpf");
 			String login = request.getParameter("login");
@@ -178,7 +179,7 @@ public class UsuarioServlet extends HttpServlet {
 			e.printStackTrace();
 			request.setAttribute("erro", "Por favor, valide os dados");
 		}
-		listar(request,response);
+		request.getRequestDispatcher("minha-conta.jsp").forward(request, response);
 	}
 	
 	private void excluir(HttpServletRequest request, HttpServletResponse response)

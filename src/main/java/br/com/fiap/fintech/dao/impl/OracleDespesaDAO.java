@@ -259,4 +259,15 @@ public class OracleDespesaDAO implements DespesaDAO{
 		}
 		return lista;
 	}
+	
+	@Override
+	public double calcularTotal(List<Despesa> despesas) {
+        double total = 0.0;
+        
+        for (Despesa despesa : despesas) {
+            total += despesa.getValor();
+        }
+        
+        return total;
+    }
 }

@@ -70,6 +70,9 @@ public class DespesaServlet extends HttpServlet {
 	
 	private void listar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		List<Despesa> lista = despesaDao.getAll();	
+		double totalDespesas = despesaDao.calcularTotal(lista);
+		
+		request.setAttribute("totalDespesas", totalDespesas);
     	request.setAttribute("despesas", lista);
     	request.getRequestDispatcher("lista-despesas.jsp").forward(request, response);
 	}

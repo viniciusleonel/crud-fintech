@@ -18,4 +18,6 @@ public interface DespesaDAO {
 	List<Despesa> getAll();
 
 	void autoDelete(int cd) throws DBException;
+
+	double calcularTotal(List<Despesa> despesas);
 }

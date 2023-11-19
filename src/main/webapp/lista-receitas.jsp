@@ -14,6 +14,7 @@
 <%@ include file="menu.jsp" %>
 	<div class="container">
 		<h1>Receitas</h1>
+		<h3>Total:  <fmt:formatNumber value="${totalReceitas}" type="currency" currencyCode="BRL" /> </h3>
 		<c:if test="${not empty msg }">
 			<div class="alert alert-success">${msg}</div>
 		</c:if>
@@ -28,12 +29,15 @@
 				<th>Data</th>
 				<th>N.º Conta</th>
 				<th></th>
+				
 			</tr>
 			<c:forEach items="${receitas}" var="r">
 				<tr>
 					<td>${r.categoria}</td>
 					<td>${r.descricao}</td>
-					<td>${r.valor}</td>
+					<td>
+						<fmt:formatNumber value="${r.valor}" type="currency" currencyCode="BRL" />
+					</td>
 					<td>
 						<fmt:formatDate value="${r.data.time}" pattern="dd/MM/yyyy"/>
 					</td>

@@ -70,6 +70,10 @@ public class ReceitaServlet extends HttpServlet {
 	
 	private void listar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		List<Receita> lista = receitaDao.getAll();	
+		
+		double totalReceitas = receitaDao.calcularTotal(lista);
+		
+		request.setAttribute("totalReceitas", totalReceitas);
     	request.setAttribute("receitas", lista);
     	request.getRequestDispatcher("lista-receitas.jsp").forward(request, response);
 	}
@@ -103,11 +107,11 @@ public class ReceitaServlet extends HttpServlet {
 			Receita receita = new Receita(0, valor, data, categoria, descricao);
 
 			receitaDao.insert(receita);
-	
+
 			request.setAttribute("msg", "Receita cadastrada!");
-			
+
 			setContaReceita(request,response);
-			
+
 		}catch(DBException db) {
 			db.printStackTrace();
 			request.setAttribute("erro", "Erro ao cadastrar");

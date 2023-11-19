@@ -9,6 +9,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import br.com.fiap.fintech.bean.Conta;
+import br.com.fiap.fintech.bean.Despesa;
 import br.com.fiap.fintech.bean.Investimento;
 import br.com.fiap.fintech.bean.Receita;
 import br.com.fiap.fintech.dao.InvestimentoDAO;
@@ -259,4 +260,15 @@ public class OracleInvestimentoDAO implements InvestimentoDAO{
 		}
 		return lista;
 	}
+	
+	@Override
+	public double calcularTotal(List<Investimento> investimentos) {
+        double total = 0.0;
+        
+        for (Investimento investimento : investimentos) {
+            total += investimento.getValor();
+        }
+        
+        return total;
+    }
 }

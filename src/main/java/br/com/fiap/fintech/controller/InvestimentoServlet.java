@@ -69,7 +69,10 @@ public class InvestimentoServlet extends HttpServlet {
 }
 	
 	private void listar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<Investimento> lista = investimentoDao.getAll();	
+		List<Investimento> lista = investimentoDao.getAll();
+		double totalInvestimentos = investimentoDao.calcularTotal(lista);
+		
+		request.setAttribute("totalInvestimentos", totalInvestimentos);
     	request.setAttribute("investimentos", lista);
     	request.getRequestDispatcher("lista-investimento.jsp").forward(request, response);
 	}
