@@ -14,27 +14,27 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import br.com.fiap.fintech.bean.Receita;
-import br.com.fiap.fintech.dao.ReceitaDAO;
+import br.com.fiap.fintech.bean.Despesa;
+import br.com.fiap.fintech.dao.DespesaDAO;
 import br.com.fiap.fintech.exception.DBException;
 import br.com.fiap.fintech.factory.DAOFactory;
 import br.com.fiap.fintech.singleton.ConnectionManager;
 
 /**
- * Servlet implementation class ReceitaServlet
+ * Servlet implementation class DespesaServlet
  */
-@WebServlet("/receita")
-public class ReceitaServlet extends HttpServlet {
+@WebServlet("/despesa")
+public class DespesaServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    private ReceitaDAO receitaDao;
+	private DespesaDAO despesaDao;
     
     private Connection conexao;
     
     @Override
     public void init() throws ServletException{
     	super.init();
-    	receitaDao = DAOFactory.getReceitaDAO();
+    	despesaDao = DAOFactory.getDespesaDAO();
     	}
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	String acao = request.getParameter("acao");
@@ -69,23 +69,23 @@ public class ReceitaServlet extends HttpServlet {
 }
 	
 	private void listar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<Receita> lista = receitaDao.getAll();	
-    	request.setAttribute("receitas", lista);
-    	request.getRequestDispatcher("lista-receitas.jsp").forward(request, response);
+		List<Despesa> lista = despesaDao.getAll();	
+    	request.setAttribute("despesas", lista);
+    	request.getRequestDispatcher("lista-despesas.jsp").forward(request, response);
 	}
 	
 	private void abrirFormEdicao(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		int id = Integer.parseInt(request.getParameter("codigo"));
-		Receita receita = receitaDao.getById(id);
-		request.setAttribute("receita", receita);
-		request.getRequestDispatcher("edicao-receita.jsp").forward(request, response);
+		Despesa despesa = despesaDao.getById(id);
+		request.setAttribute("despesa", despesa);
+		request.getRequestDispatcher("edicao-despesa.jsp").forward(request, response);
 	}
 	
 	private void abrirFormCadastro(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
     	
-		request.getRequestDispatcher("cadastro-receita.jsp").forward(request, response);
+		request.getRequestDispatcher("cadastro-despesa.jsp").forward(request, response);
 	}
 	
 	private void cadastrar(HttpServletRequest request, HttpServletResponse response)
@@ -100,13 +100,13 @@ public class ReceitaServlet extends HttpServlet {
 			String descricao = request.getParameter("descricao");
 			
 			
-			Receita receita = new Receita(0, valor, data, categoria, descricao);
+			Despesa despesa = new Despesa(0, valor, data, categoria, descricao);
 
-			receitaDao.insert(receita);
+			despesaDao.insert(despesa);
 	
-			request.setAttribute("msg", "Receita cadastrada!");
+			request.setAttribute("msg", "Despesa cadastrada!");
 			
-			setContaReceita(request,response);
+			setContaDespesa(request,response);
 			
 		}catch(DBException db) {
 			db.printStackTrace();
@@ -115,17 +115,17 @@ public class ReceitaServlet extends HttpServlet {
 			e.printStackTrace();
 			request.setAttribute("erro","Por favor, valide os dados");
 		}
-		request.getRequestDispatcher("cadastro-receita.jsp").forward(request, response);
+		request.getRequestDispatcher("cadastro-despesa.jsp").forward(request, response);
 	}
 	
-	protected void setContaReceita(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void setContaDespesa(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int proximoValorReceita = 0;
 		int proximoValorConta = 0;
 		
 		try {
 		    conexao = ConnectionManager.getInstance().getConnection();
 
-		    String sql = "SELECT cd_receita FROM tb_fin_receita ORDER BY cd_receita DESC FETCH FIRST 1 ROWS ONLY";
+		    String sql = "SELECT cd_despesa FROM tb_fin_despesa ORDER BY cd_despesa DESC FETCH FIRST 1 ROWS ONLY";
 		    String sql2 = "SELECT cd_conta FROM tb_fin_conta ORDER BY cd_conta DESC FETCH FIRST 1 ROWS ONLY";
 
 		    try (PreparedStatement pstmt = conexao.prepareStatement(sql);
@@ -142,7 +142,7 @@ public class ReceitaServlet extends HttpServlet {
 		            proximoValorConta = rs2.getInt(1);
 		        }
 		        
-		        String updateSqlUser = "UPDATE tb_fin_receita SET CD_CONTA = ? WHERE CD_receita = ?";
+		        String updateSqlUser = "UPDATE tb_fin_despesa SET CD_CONTA = ? WHERE CD_despesa = ?";
 
 
 		        try (PreparedStatement updateStmtUser = conexao.prepareStatement(updateSqlUser)) {
@@ -159,7 +159,7 @@ public class ReceitaServlet extends HttpServlet {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		request.getRequestDispatcher("cadastro-receita.jsp").forward(request, response);
+		request.getRequestDispatcher("cadastro-despesa.jsp").forward(request, response);
 	}	
 	
 	private void editar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -173,11 +173,11 @@ public class ReceitaServlet extends HttpServlet {
 			String descricao = request.getParameter("descricao");
 			
 			
-			Receita receita = new Receita(codigo, valor, data, categoria, descricao);
+			Despesa despesa = new Despesa(codigo, valor, data, categoria, descricao);
 			
-			receitaDao.update(receita);
+			despesaDao.update(despesa);
 
-			request.setAttribute("msg", "Receita atualizada!");
+			request.setAttribute("msg", "Despesa atualizada!");
 		} catch (DBException db) {
 			db.printStackTrace();
 			request.setAttribute("erro", "Erro ao atualizar");
@@ -192,8 +192,8 @@ public class ReceitaServlet extends HttpServlet {
 			throws ServletException, IOException {
 		int codigoUser = Integer.parseInt(request.getParameter("codigo"));
 		try {
-			receitaDao.delete(codigoUser);
-			request.setAttribute("msg", "Receita removida!");
+			despesaDao.delete(codigoUser);
+			request.setAttribute("msg", "Despesa removida!");
 		} catch (DBException e) {
 			e.printStackTrace();
 			request.setAttribute("erro", "Erro ao atualizar");

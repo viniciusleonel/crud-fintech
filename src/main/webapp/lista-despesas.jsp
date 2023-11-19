@@ -6,14 +6,14 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Lista de Receitas</title>
+<title>Lista de Despesas</title>
 <%@ include file="header.jsp" %>
 </head>
 <body>
 
 <%@ include file="menu.jsp" %>
 	<div class="container">
-		<h1>Receitas</h1>
+		<h1>Despesas</h1>
 		<c:if test="${not empty msg }">
 			<div class="alert alert-success">${msg}</div>
 		</c:if>
@@ -29,26 +29,26 @@
 				<th>N.º Conta</th>
 				<th></th>
 			</tr>
-			<c:forEach items="${receitas}" var="r">
+			<c:forEach items="${despesas}" var="d">
 				<tr>
-					<td>${r.categoria}</td>
-					<td>${r.descricao}</td>
-					<td>${r.valor}</td>
+					<td>${d.categoria}</td>
+					<td>${d.descricao}</td>
+					<td>${d.valor}</td>
 					<td>
-						<fmt:formatDate value="${r.data.time}" pattern="dd/MM/yyyy"/>
+						<fmt:formatDate value="${d.data.time}" pattern="dd/MM/yyyy"/>
 					</td>
-					<td>${r.conta.num}</td>
+					<td>${d.conta.num}</td>
 					<td>
-						<c:url value="receita" var="link">
+						<c:url value="despesa" var="link">
 							<c:param name="acao" value="abrir-form-edicao"/>
-							<c:param name="codigo" value="${r.codigo}"/>
+							<c:param name="codigo" value="${d.codigo}"/>
 						</c:url>
 						<a href="${link}" class="btn btn-primary btn-xs me-1">Editar</a>
 						<button type="button" class="btn btn-danger btn-xs ms-1" 
 								data-bs-toggle="modal" 
 								data-bs-target="#excluirModal" 
-								onclick="codigoExcluir.value = ${r.codigo}"
-								onclick="codigoExcluir.value = ${r.conta.codigo}">
+								onclick="codigoExcluir.value = ${d.codigo}"
+								onclick="codigoExcluir.value = ${d.conta.codigo}">
   							Excluir
 						</button>
 					</td>
@@ -68,10 +68,10 @@
         </button>
       </div>
       <div class="modal-body">
-        		Deseja realmente excluir receita?
+        		Deseja realmente excluir despesa?
       </div>
       <div class="modal-footer">
-      	<form action="receita" method="post">
+      	<form action="despesa" method="post">
       		<input type="hidden" name="acao" value="excluir">
       		<input type="hidden" name="codigo" id="codigoExcluir">
 	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>

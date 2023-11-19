@@ -12,7 +12,7 @@
 		<ul class="dropdown-menu">
 		    <li><a class="dropdown-item" href="cadastro-usuario.jsp">Cadastrar Usuário</a></li>
 		    <li><a class="dropdown-item" href="cadastro-receita.jsp">Cadastrar Receita</a></li>
-		    <li><a class="dropdown-item" href="#">Something else here</a></li>
+		    <li><a class="dropdown-item" href="cadastro-despesa.jsp">Cadastrar Despesa</a></li>
 	    </ul>
   </div>
   
@@ -23,7 +23,7 @@
 		<ul class="dropdown-menu">
 		    <li><a class="dropdown-item" href="usuario?acao=listar">Listar Usuários</a></li>
 		    <li><a class="dropdown-item" href="receita?acao=listar">Listar Receitas</a></li>
-		    <li><a class="dropdown-item" href="#">Something else here</a></li>
+		    <li><a class="dropdown-item" href="despesa?acao=listar">Listar Despesas</a></li>
 	    </ul>
   </div>
 
@@ -39,9 +39,9 @@
     </c:if>
     a
     <c:if test="${not empty user }">
-    		<a href="minha-conta.jsp" class="text-decoration-none me-2" >
-	    		${user }
-	    		<a href="login" class="btn btn-outline-primary my-2 my-sm-0">Sair</a>
+   		<a href="minha-conta.jsp" class="text-decoration-none me-2 " >
+    		${user }
+    		<a href="login" class="btn btn-outline-primary my-2 my-sm-0 text-white">Sair</a>
 	  	</a>	
     </c:if>	
   </div>

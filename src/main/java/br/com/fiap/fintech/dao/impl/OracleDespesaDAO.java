@@ -8,7 +8,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import br.com.fiap.fintech.bean.Conta;
 import br.com.fiap.fintech.bean.Despesa;
+import br.com.fiap.fintech.bean.Receita;
 import br.com.fiap.fintech.dao.DespesaDAO;
 import br.com.fiap.fintech.exception.DBException;
 import br.com.fiap.fintech.singleton.ConnectionManager;
@@ -21,20 +23,33 @@ public class OracleDespesaDAO implements DespesaDAO{
 	public void insert(Despesa despesa) throws DBException {
 		PreparedStatement stmt = null;
 
+		int proximoValor = 0;
+		
 		try {
 			conexao = ConnectionManager.getInstance().getConnection();
+			String sql = "SELECT SQ_TB_FIN_DESPESA.NEXTVAL FROM DUAL";
+			
+            try (PreparedStatement pstmt = conexao.prepareStatement(sql)) {
+                ResultSet rs = pstmt.executeQuery();
+
+                
+                if (rs.next()) {
+                    proximoValor = rs.getInt(1);
+                }
+            }
 			
 			stmt = conexao.prepareStatement(
 					"INSERT INTO TB_FIN_DESPESA (CD_DESPESA, VL_DESPESA, DT_DESPESA, CATEGORIA_DESPESA, DESCRICAO_DESPESA) " 
-					+ "VALUES (SQ_TB_FIN_DESPESA.NEXTVAL, ?, ?, ?, ? )");
-			stmt.setDouble(1, despesa.getValor());
+					+ "VALUES (?, ?, ?, ?, ? )");
+			stmt.setInt(1, proximoValor);
+			stmt.setDouble(2, despesa.getValor());
 			java.sql.Date data = new java.sql.Date(despesa.getData().getTimeInMillis());
-			stmt.setDate(2, data);
-			stmt.setString(3, despesa.getCategotia());
-			stmt.setString(4, despesa.getDescricao());
+			stmt.setDate(3, data);
+			stmt.setString(4, despesa.getCategoria());
+			stmt.setString(5, despesa.getDescricao());
 			stmt.executeUpdate();
 			
-			System.out.println("Despesa " + despesa.getCodigo() + " registrada!");
+			System.out.println("Despesa " + despesa.getCategoria() + " registrada!");
 			
 		}catch (SQLException e) {
 			e.printStackTrace();
@@ -67,7 +82,7 @@ public class OracleDespesaDAO implements DespesaDAO{
 			stmt.setDouble(1, despesa.getValor());
 			java.sql.Date data = new java.sql.Date(despesa.getData().getTimeInMillis());
 			stmt.setDate(2, data);
-			stmt.setString(3, despesa.getCategotia());
+			stmt.setString(3, despesa.getCategoria());
 			stmt.setString(4, despesa.getDescricao());
 			stmt.setInt(5, despesa.getCodigo());
 			stmt.executeUpdate();
@@ -167,7 +182,16 @@ public class OracleDespesaDAO implements DespesaDAO{
 		try {
 			conexao = ConnectionManager.getInstance().getConnection();
 			
-			stmt = conexao.prepareStatement("SELECT * FROM TB_FIN_DESPESA ORDER BY CD_DESPESA ASC");
+			stmt = conexao.prepareStatement("SELECT "
+					+ "TB_FIN_DESPESA.CD_DESPESA, "
+					+ "TB_FIN_DESPESA.VL_DESPESA, "
+					+ "TB_FIN_DESPESA.DT_DESPESA, "
+					+ "TB_FIN_DESPESA.CATEGORIA_DESPESA, "
+					+ "TB_FIN_DESPESA.DESCRICAO_DESPESA, "
+					+ "TB_FIN_CONTA.NUM_CONTA, "
+					+ "TB_FIN_CONTA.SALDO_CONTA "
+				+ "FROM TB_FIN_DESPESA "
+				+ "JOIN TB_FIN_CONTA ON TB_FIN_DESPESA.CD_CONTA = TB_FIN_CONTA.CD_CONTA");
 			rs = stmt.executeQuery();
 			
 			while (rs.next()) {
@@ -182,8 +206,14 @@ public class OracleDespesaDAO implements DespesaDAO{
 			    String categoria_despesa = rs.getString("CATEGORIA_DESPESA");
 			    String descricao_despesa = rs.getString("DESCRICAO_DESPESA");
 			    
-			    Despesa despesa  = new Despesa(cd_despesa, vl_despesa, dt_despesa, categoria_despesa, descricao_despesa);
-				
+			    int num_conta = rs.getInt("NUM_CONTA");
+			    double saldo_conta = rs.getDouble("SALDO_CONTA");
+			    
+			    Despesa despesa = new Despesa(cd_despesa, vl_despesa, dt_despesa, categoria_despesa, descricao_despesa);
+			    Conta conta = new Conta ();
+			    conta.setNum(num_conta);
+			    conta.setSaldo(saldo_conta);
+			    despesa.setConta(conta);
 				lista.add(despesa);
 			}
 			

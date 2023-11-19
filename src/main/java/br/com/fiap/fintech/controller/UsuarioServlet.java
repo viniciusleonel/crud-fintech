@@ -1,8 +1,10 @@
 package br.com.fiap.fintech.controller;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -12,21 +14,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import br.com.fiap.fintech.bean.Conta;
-import br.com.fiap.fintech.bean.Receita;
 import br.com.fiap.fintech.bean.Usuario;
 import br.com.fiap.fintech.dao.ContaDAO;
-import br.com.fiap.fintech.dao.ReceitaDAO;
 import br.com.fiap.fintech.dao.UsuarioDAO;
 import br.com.fiap.fintech.exception.DBException;
 import br.com.fiap.fintech.factory.DAOFactory;
+import br.com.fiap.fintech.singleton.ConnectionManager;
 import br.com.fiap.fintech.util.CriptografiaUtils;
 
 @WebServlet("/usuario")
-public class CadUserServlet extends HttpServlet {
+public class UsuarioServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     private UsuarioDAO dao;
     private ContaDAO contaDao;
+    
+    private Connection conexao;
     
     @Override
     public void init() throws ServletException{
@@ -112,7 +115,7 @@ public class CadUserServlet extends HttpServlet {
 	
 			request.setAttribute("msg", "Usuário cadastrado!");
 			
-			request.getRequestDispatcher("SetContaUser").forward(request, response);
+			setContaUsuario(request,response);
 		}catch(DBException db) {
 			db.printStackTrace();
 			request.setAttribute("erro", "Erro ao cadastrar");
@@ -120,7 +123,7 @@ public class CadUserServlet extends HttpServlet {
 			e.printStackTrace();
 			request.setAttribute("erro","Por favor, valide os dados");
 		}
-		request.getRequestDispatcher("SetContaUser").forward(request, response);
+		request.getRequestDispatcher("cadastro-usuario.jsp").forward(request, response);
 	}	
 	
 	private void editar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -159,6 +162,59 @@ public class CadUserServlet extends HttpServlet {
 			request.setAttribute("erro", "Erro ao atualizar");
 		}
 		listar(request,response);
+		
 	}
+
+	protected void setContaUsuario(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
+		int proximoValorUser = 0;
+		int proximoValorConta = 0;
+		
+		try {
+		    conexao = ConnectionManager.getInstance().getConnection();
+
+		    String sql = "SELECT cd_usuario FROM tb_fin_usuario ORDER BY cd_usuario DESC FETCH FIRST 1 ROWS ONLY";
+		    String sql2 = "SELECT cd_conta FROM tb_fin_conta ORDER BY cd_conta DESC FETCH FIRST 1 ROWS ONLY";
+
+		    try (PreparedStatement pstmt = conexao.prepareStatement(sql);
+		         PreparedStatement pstmt2 = conexao.prepareStatement(sql2)) {
+
+		        ResultSet rs = pstmt.executeQuery();
+		        ResultSet rs2 = pstmt2.executeQuery();
+
+		        if (rs.next()) {
+		            proximoValorUser = rs.getInt(1);
+		        }
+
+		        if (rs2.next()) {
+		            proximoValorConta = rs2.getInt(1);
+		        }
+
+		        String updateSqlUser = "UPDATE tb_fin_usuario SET CD_CONTA = ? WHERE CD_USUARIO = ?";
+		        String updateSqlConta = "UPDATE tb_fin_conta SET CD_USUARIO = ? WHERE CD_CONTA = ?";
+
+		        try (PreparedStatement updateStmtUser = conexao.prepareStatement(updateSqlUser);
+		             PreparedStatement updateStmtConta = conexao.prepareStatement(updateSqlConta)) {
+
+		            updateStmtUser.setInt(1, proximoValorConta);
+		            updateStmtUser.setInt(2, proximoValorUser);
+		            updateStmtUser.executeUpdate();
+
+		            updateStmtConta.setInt(1, proximoValorUser);
+		            updateStmtConta.setInt(2, proximoValorConta);
+		            updateStmtConta.executeUpdate();
+
+		            System.out.println("Registros atualizados com sucesso!");
+		        }
+		    }
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		request.getRequestDispatcher("cadastro-usuario.jsp").forward(request, response);
+	}	
+	
+	
+	
 	
 }

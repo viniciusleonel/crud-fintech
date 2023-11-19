@@ -48,7 +48,7 @@ public class OracleReceitaDAO implements ReceitaDAO{
 			stmt.setString(5, receita.getDescricao());
 			stmt.executeUpdate();
 			
-			System.out.println("Receita " + receita.getCodigo() + " registrada!");
+			System.out.println("Receita " + receita.getCategoria() + " registrada!");
 			
 		}catch (SQLException e) {
 			e.printStackTrace();
