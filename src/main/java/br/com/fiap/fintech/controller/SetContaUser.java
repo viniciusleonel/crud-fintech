@@ -90,12 +90,8 @@ public class SetContaUser extends HttpServlet {
 		        }
 		    }
 			
-	
-			request.setAttribute("msg", "Usuário cadastrado!");
-			
 		}catch(Exception e){
 			e.printStackTrace();
-			request.setAttribute("erro","Por favor, valide os dados");
 		}
 		request.getRequestDispatcher("cadastro-usuario.jsp").forward(request, response);
 	}	

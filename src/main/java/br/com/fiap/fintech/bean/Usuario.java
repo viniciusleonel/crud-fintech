@@ -26,7 +26,7 @@ public class Usuario {
 		this.email = email;
 		this.senha = senha;
 	}
-	
+
 	public int getCodigo() {
 		return codigo;
 	}

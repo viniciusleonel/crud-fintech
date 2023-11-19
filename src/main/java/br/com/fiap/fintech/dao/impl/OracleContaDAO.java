@@ -102,7 +102,7 @@ public class OracleContaDAO implements ContaDAO{
 			
 			stmt = conexao.prepareStatement(
 					"DELETE FROM TB_FIN_CONTA "
-						+ "WHERE CD_CONTA = ? ");
+						+ "WHERE CD_USUARIO = ? ");
 			stmt.setInt(1, cd);
 			stmt.executeUpdate();
 						

@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -31,7 +32,11 @@
             <div class="container my-5">
                 <h1 class="col-12 d-flex justify-content-center fs-1">Fintech</h1>
             </div>
-
+			<c:if test="${empty user }">
+			    <span class="navbar-text text-danger ms-3 d-flex justify-content-center" style="margin-right:10px" >
+			        ${erro }
+			  	</span>	   
+	   		</c:if>
             <div class="container my-3 position-absolute top-50 start-50 translate-middle">
                 <h3 class="justify-content-start col-6 fs-3 px-4 pb-5">Tecnologia e finanças finalmente JUNTOS</h3>
             </div>
@@ -57,17 +62,20 @@
                     <div class="modal-content bg-img container">
                         <div class="modal-header">
                             <h1 class="modal-title fs-2" id="exampleModalLabel">Fintech</h1>
-
+							 
                             <button type="button" class="btn-close form-area" data-bs-dismiss="modal"
                                 aria-label="Close"></button>
                         </div>
                         <div class="modal-body ">
-
-                            <form action="usuario" method="post">
-								<input type="hidden" value="cadastrar" name="acao">
+							
+                            <form action="login" method="post">
+								<!--<input type="hidden" value="listar" name="acao">  -->
+                                
+							   
                                 <div class="mb-3">
                                     <h3 class="my-5 fs-3">Bem-vindo de volta!</h3>
-
+                                    
+										
                                     <label for="id-email" class="form-label fs-4">Email</label>
                                     <input type="text" class="form-control form-area" name="email" id="id-email"
                                         placeholder="teste@fiap.com" required>
@@ -78,13 +86,18 @@
                                     <input type="password" class="form-control form-area" name="senha" id="id-senha"
                                         placeholder="******" required>
                                 </div>
-
+								<c:if test="${empty user }">
+								    <span class="navbar-text text-danger d-flex" style="margin-right:10px" >
+								        ${erro }
+								  	</span>
+								</c:if>
                                 <div class="container d-flex justify-content-center my-5">
                                     <button type="submit" class="btn btn-primary bg-btn-blue col-6 btn-logar">
                                         Entrar
                                     </button>
                                 </div>
                             </form>
+                            
                         </div>
                     </div>
                 </div>
@@ -147,6 +160,7 @@
                         </div>
                     </div>
                 </div>
+            </div>
             </div>
     </section>
     <%@ include file="footer.jsp" %>

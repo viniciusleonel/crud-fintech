@@ -21,17 +21,30 @@ public class OracleReceitaDAO implements ReceitaDAO{
 	public void insert(Receita receita) throws DBException {
 		PreparedStatement stmt = null;
 
+		int proximoValor = 0;
+		
 		try {
 			conexao = ConnectionManager.getInstance().getConnection();
+			String sql = "SELECT SQ_TB_FIN_RECEITA.NEXTVAL FROM DUAL";
+			
+            try (PreparedStatement pstmt = conexao.prepareStatement(sql)) {
+                ResultSet rs = pstmt.executeQuery();
+
+                
+                if (rs.next()) {
+                    proximoValor = rs.getInt(1);
+                }
+            }
 			
 			stmt = conexao.prepareStatement(
 					"INSERT INTO TB_FIN_RECEITA (CD_RECEITA, VL_RECEITA, DT_RECEITA, CATEGORIA_RECEITA, DESCRICAO_RECEITA) " 
-					+ "VALUES (SQ_TB_FIN_RECEITA.NEXTVAL, ?, ?, ?, ? )");
-			stmt.setDouble(1, receita.getValor());
+					+ "VALUES (?, ?, ?, ?, ? )");
+			stmt.setInt(1, proximoValor);
+			stmt.setDouble(2, receita.getValor());
 			java.sql.Date data = new java.sql.Date(receita.getData().getTimeInMillis());
-			stmt.setDate(2, data);
-			stmt.setString(3, receita.getCategotia());
-			stmt.setString(4, receita.getDescricao());
+			stmt.setDate(3, data);
+			stmt.setString(4, receita.getCategotia());
+			stmt.setString(5, receita.getDescricao());
 			stmt.executeUpdate();
 			
 			System.out.println("Receita " + receita.getCodigo() + " registrada!");

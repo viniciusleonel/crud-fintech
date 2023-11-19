@@ -1,6 +1,8 @@
 package br.com.fiap.fintech.controller;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -10,8 +12,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import br.com.fiap.fintech.bean.Conta;
+import br.com.fiap.fintech.bean.Receita;
 import br.com.fiap.fintech.bean.Usuario;
 import br.com.fiap.fintech.dao.ContaDAO;
+import br.com.fiap.fintech.dao.ReceitaDAO;
 import br.com.fiap.fintech.dao.UsuarioDAO;
 import br.com.fiap.fintech.exception.DBException;
 import br.com.fiap.fintech.factory.DAOFactory;
@@ -23,6 +27,7 @@ public class CadUserServlet extends HttpServlet {
        
     private UsuarioDAO dao;
     private ContaDAO contaDao;
+    private ReceitaDAO receitaDao;
     
     @Override
     public void init() throws ServletException{
@@ -56,6 +61,9 @@ public class CadUserServlet extends HttpServlet {
 		case "cadastrar":
 			cadastrar(request, response);
 			break;
+		case "cadastrarReceita":
+			cadastrarReceita(request, response);
+			break;	
 		case "editar":
 			editar(request,response);
 			break;
@@ -65,25 +73,10 @@ public class CadUserServlet extends HttpServlet {
 		}
 	}
     
-    private void excluir(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		int codigoUser = Integer.parseInt(request.getParameter("codigo"));
-		int codigoConta = Integer.parseInt(request.getParameter("codigo"));
-		try {
-			dao.delete(codigoUser);
-			contaDao.delete(codigoConta);
-			request.setAttribute("msg", "Usuário removido!");
-		} catch (DBException e) {
-			e.printStackTrace();
-			request.setAttribute("erro", "Erro ao atualizar");
-		}
-		listar(request,response);
-	}
-    
-    private void abrirFormCadastro(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-    	
-		request.getRequestDispatcher("cadastro-usuario.jsp").forward(request, response);
+    private void listar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		List<Usuario> lista = dao.getDetails();	
+    	request.setAttribute("usuarios", lista);
+    	request.getRequestDispatcher("lista-usuario.jsp").forward(request, response);
 	}
     
     private void abrirFormEdicao(HttpServletRequest request, HttpServletResponse response)
@@ -94,10 +87,10 @@ public class CadUserServlet extends HttpServlet {
 		request.getRequestDispatcher("edicao-usuario.jsp").forward(request, response);
 	}
 
-	private void listar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<Usuario> lista = dao.getDetails();	
-    	request.setAttribute("usuarios", lista);
-    	request.getRequestDispatcher("lista-usuario.jsp").forward(request, response);
+    private void abrirFormCadastro(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+    	
+		request.getRequestDispatcher("cadastro-usuario.jsp").forward(request, response);
 	}
 
 	private void cadastrar(HttpServletRequest request, HttpServletResponse response)
@@ -123,6 +116,7 @@ public class CadUserServlet extends HttpServlet {
 	
 			request.setAttribute("msg", "Usuário cadastrado!");
 			
+			request.getRequestDispatcher("SetContaUser").forward(request, response);
 		}catch(DBException db) {
 			db.printStackTrace();
 			request.setAttribute("erro", "Erro ao cadastrar");
@@ -131,6 +125,35 @@ public class CadUserServlet extends HttpServlet {
 			request.setAttribute("erro","Por favor, valide os dados");
 		}
 		request.getRequestDispatcher("SetContaUser").forward(request, response);
+	}	
+	
+	private void cadastrarReceita(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		
+		try{
+//			int codigo = Integer.parseInt(request.getParameter("codigo"));
+			double valor = Double.parseDouble(request.getParameter("valor"));
+			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+			Calendar data = Calendar.getInstance();
+			data.setTime(format.parse(request.getParameter("data")));
+			String categoria = request.getParameter("categoria");
+			String descricao = request.getParameter("descricao");
+			
+			
+			Receita receita = new Receita(0, valor, data, categoria, descricao);
+			
+			receitaDao.insert(receita);
+	
+			request.setAttribute("msg", "Receita cadastrada!");
+			
+		}catch(DBException db) {
+			db.printStackTrace();
+			request.setAttribute("erro", "Erro ao cadastrar");
+		}catch(Exception e){
+			e.printStackTrace();
+			request.setAttribute("erro","Por favor, valide os dados");
+		}
+		request.getRequestDispatcher("cadastro-receita.jsp").forward(request, response);
 	}	
 	
 	private void editar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -153,6 +176,20 @@ public class CadUserServlet extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 			request.setAttribute("erro", "Por favor, valide os dados");
+		}
+		listar(request,response);
+	}
+	
+	private void excluir(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		int codigoUser = Integer.parseInt(request.getParameter("codigo"));
+		try {
+			dao.delete(codigoUser);
+			contaDao.delete(codigoUser);
+			request.setAttribute("msg", "Usuário removido!");
+		} catch (DBException e) {
+			e.printStackTrace();
+			request.setAttribute("erro", "Erro ao atualizar");
 		}
 		listar(request,response);
 	}
