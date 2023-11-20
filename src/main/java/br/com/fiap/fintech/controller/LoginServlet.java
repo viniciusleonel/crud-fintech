@@ -73,7 +73,7 @@ public class LoginServlet extends HttpServlet {
 			session.setAttribute("senha", senha);
 			session.setAttribute("conta", contaNum);
 			session.setAttribute("idConta", idConta);
-			request.getRequestDispatcher("minha-conta.jsp").forward(request, response);
+			request.getRequestDispatcher("usuario").forward(request, response);
 		}else {
 			request.setAttribute("erro", "Usuário e/ou senha inválidos");
 			request.getRequestDispatcher("home.jsp").forward(request, response);

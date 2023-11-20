@@ -31,7 +31,7 @@
   <div class="collapse navbar-collapse container-fluid d-flex justify-content-end" id="navbarSupportedContent">
     
     <c:if test="${not empty user }">
-   		<a href="minha-conta.jsp" class="text-decoration-none me-2 " >
+   		<a href="usuario?acao=listar" class="text-decoration-none me-2 " >
    			${idConta }
    			${conta }
     		${user }

@@ -29,16 +29,15 @@
 				<th> N.º Conta</th>
 				<th></th>
 			</tr>
-			<c:forEach items="${usuarios}" var="u">
 				<tr>
-					<td>${u.nome}</td>
-					<td>${u.cpf}</td>
-					<td>${u.login}</td>
-					<td>${u.email}</td>
-					<td>${u.conta.num}</td>
+					<td>${usuario.nome}</td>
+					<td>${usuario.cpf}</td>
+					<td>${usuario.login}</td>
+					<td>${usuario.email}</td>
+					<td>${usuario.conta.num}</td>
 					<td>
 						<c:url value="usuario" var="link">
-							<c:param name="acao" value="abrir-form-edicao"/>
+							<c:param name="acao" value="listar"/>
 							<c:param name="codigo" value="${u.codigo}"/>
 						</c:url>
 						<a href="${link}" class="btn btn-primary btn-xs me-1">Editar</a>
@@ -51,7 +50,6 @@
 						</button>
 					</td>
 				</tr>
-			</c:forEach>
 		</table>
 	</div>
 	

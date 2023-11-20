@@ -288,9 +288,9 @@ public class OracleUsuarioDAO implements UsuarioDAO{
 	}
 
 	@Override
-	public List<Usuario> getDetails() {
+	public Usuario getDetails() {
 		PreparedStatement stmt = null;
-		List<Usuario> lista = new ArrayList<Usuario>();
+		Usuario usuario = new Usuario();
 		ResultSet rs = null;
 
 			try {
@@ -323,7 +323,7 @@ public class OracleUsuarioDAO implements UsuarioDAO{
 				    
 				    senha_usuario = CriptografiaUtils.criptografar(senha_usuario);
 				    
-				    Usuario usuario = new Usuario(
+				    usuario = new Usuario(
 				    		cd_usuario, nm_usuario, cpf_usuario, login_usuario, 
 				    		email_usuario, senha_usuario);
 				    Conta conta = new Conta ();
@@ -332,7 +332,6 @@ public class OracleUsuarioDAO implements UsuarioDAO{
 				    
 				    usuario.setConta(conta);
 					
-					lista.add(usuario);
 				}
 				
 			}catch (SQLException e) {
@@ -348,7 +347,7 @@ public class OracleUsuarioDAO implements UsuarioDAO{
 					e.printStackTrace();
 				}
 			}
-			return lista;
+			return usuario;
 		}
 
 	@Override

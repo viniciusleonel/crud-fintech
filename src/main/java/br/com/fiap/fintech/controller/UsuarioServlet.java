@@ -5,8 +5,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-import java.util.List;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -86,9 +84,13 @@ public class UsuarioServlet extends HttpServlet {
 	}
     
     private void listar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<Usuario> lista = dao.getDetails();	
-    	request.setAttribute("usuarios", lista);
-    	request.getRequestDispatcher("minha-conta.jsp").forward(request, response);
+    	HttpSession session = request.getSession();
+    	int codigoUsuario = (int) session.getAttribute("id");
+    	Usuario usuario = new Usuario();
+    	usuario = dao.getById(codigoUsuario);
+    	System.out.println(usuario.getNome());
+    	request.setAttribute("usuario", usuario);
+    	request.getRequestDispatcher("lista-usuario.jsp").forward(request, response);
 	}
     
     private void minhaConta(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -1,8 +1,5 @@
 package br.com.fiap.fintech.dao;
 
-import java.util.List;
-
-import br.com.fiap.fintech.bean.Conta;
 import br.com.fiap.fintech.bean.Usuario;
 import br.com.fiap.fintech.exception.DBException;
 
@@ -20,7 +17,7 @@ public interface UsuarioDAO {
 	
 	Usuario getById(int cd);
 	
-	List<Usuario> getDetails();
+	Usuario getDetails();
 
 	int getCodigo(Usuario usuario);
 
