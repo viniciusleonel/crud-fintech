@@ -37,7 +37,47 @@
 					<td>${usuario.conta.num}</td>
 					<td>
 						<c:url value="usuario" var="link">
-							<c:param name="acao" value="listar"/>
+							<c:param name="acao" value="abrir-form-edicao"/>
+							<c:param name="codigo" value="${usuario.codigo}"/>
+						</c:url>
+						<a href="${link}" class="btn btn-primary btn-xs me-1">Editar</a>
+						<button type="button" class="btn btn-danger btn-xs ms-1" 
+								data-bs-toggle="modal" 
+								data-bs-target="#excluirModal" 
+								onclick="codigoExcluir.value = ${usuario.codigo}"
+								onclick="codigoExcluir.value = ${usuario.conta.codigo}">
+  							Excluir
+						</button>
+					</td>
+				</tr>
+		</table>
+	</div>
+	<div class="container">
+		<h2>Conta</h2>
+		<c:if test="${not empty msg }">
+			<div class="alert alert-success">${msg}</div>
+		</c:if>
+		<c:if test="${not empty erro }">
+			<div class="alert alert-danger">${erro}</div>
+		</c:if>
+		<table class="table table-striped">
+			<tr>
+				<th>Nome</th>
+				<th>CPF</th>
+				<th>Login</th>
+				<th>Email</th>
+				<th> N.º Conta</th>
+				<th></th>
+			</tr>
+				<tr>
+					<td>${usuario.nome}</td>
+					<td>${usuario.cpf}</td>
+					<td>${usuario.login}</td>
+					<td>${usuario.email}</td>
+					<td>${usuario.conta.num}</td>
+					<td>
+						<c:url value="usuario" var="link">
+							<c:param name="acao" value="abrir-form-edicao"/>
 							<c:param name="codigo" value="${usuario.codigo}"/>
 						</c:url>
 						<a href="${link}" class="btn btn-primary btn-xs me-1">Editar</a>

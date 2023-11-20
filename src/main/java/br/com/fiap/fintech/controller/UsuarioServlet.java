@@ -181,7 +181,9 @@ public class UsuarioServlet extends HttpServlet {
 			e.printStackTrace();
 			request.setAttribute("erro", "Por favor, valide os dados");
 		}
-		request.getRequestDispatcher("minha-conta.jsp").forward(request, response);
+		response.sendRedirect(request.getContextPath() + "/usuario?acao=listar");
+
+
 	}
 	
 	private void excluir(HttpServletRequest request, HttpServletResponse response)
