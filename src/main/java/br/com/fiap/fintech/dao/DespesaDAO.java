@@ -13,11 +13,13 @@ public interface DespesaDAO {
 	
 	void delete (int cd) throws DBException;
 	
+	void autoDelete(int cd) throws DBException;
+
+	double calcularTotal(List<Despesa> despesas);
+	
 	Despesa getById(int cd);
 	
 	List<Despesa> getAll();
 
-	void autoDelete(int cd) throws DBException;
-
-	double calcularTotal(List<Despesa> despesas);
+	List<Despesa> getAllById(int id);
 }

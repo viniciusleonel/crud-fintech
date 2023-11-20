@@ -30,6 +30,8 @@ public class LoginServlet extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
+		session.removeAttribute("idConta");
+		session.removeAttribute("id");
 		session.invalidate();
 		request.getRequestDispatcher("home.jsp").forward(request, response);
 	}
@@ -73,7 +75,7 @@ public class LoginServlet extends HttpServlet {
 			session.setAttribute("senha", senha);
 			session.setAttribute("conta", contaNum);
 			session.setAttribute("idConta", idConta);
-			request.getRequestDispatcher("usuario").forward(request, response);
+			request.getRequestDispatcher("cadastro-receita.jsp").forward(request, response);
 		}else {
 			request.setAttribute("erro", "Usuário e/ou senha inválidos");
 			request.getRequestDispatcher("home.jsp").forward(request, response);

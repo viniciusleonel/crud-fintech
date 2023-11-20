@@ -170,7 +170,7 @@ public class OracleDespesaDAO implements DespesaDAO{
 		try {
 			conexao = ConnectionManager.getInstance().getConnection();
 			
-			stmt = conexao.prepareStatement("SELECT * FROM TB_FIN_DESPESA WHERE CD_DESPESA = ?");
+			stmt = conexao.prepareStatement("SELECT * FROM TB_FIN_DESPESA WHERE CD_CONTA = ?");
 		    stmt.setInt(1, cd);
 		    rs = stmt.executeQuery();
 		    
@@ -243,6 +243,50 @@ public class OracleDespesaDAO implements DespesaDAO{
 			    conta.setNum(num_conta);
 			    conta.setSaldo(saldo_conta);
 			    despesa.setConta(conta);
+				lista.add(despesa);
+			}
+			
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				stmt.close();
+				rs.close();
+				conexao.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return lista;
+	}
+	
+	@Override
+	public List<Despesa> getAllById(int id) {
+		PreparedStatement stmt = null;
+		List<Despesa> lista = new ArrayList<Despesa>();
+		ResultSet rs = null;
+
+		try {
+			conexao = ConnectionManager.getInstance().getConnection();
+			
+			stmt = conexao.prepareStatement("SELECT * FROM TB_FIN_DESPESA WHERE CD_CONTA = ?");
+			stmt.setInt(1, id);
+		    rs = stmt.executeQuery();
+			
+			while (rs.next()) {
+				
+				int cd_despesa = rs.getInt("CD_DESPESA");
+			    double vl_despesa = rs.getDouble("VL_DESPESA");
+			    
+			    java.sql.Date data = rs.getDate("DT_DESPESA");
+				Calendar dt_despesa = Calendar.getInstance();
+				dt_despesa.setTimeInMillis(data.getTime());
+			    
+			    String categoria_despesa = rs.getString("CATEGORIA_DESPESA");
+			    String descricao_despesa = rs.getString("DESCRICAO_DESPESA");
+			    
+			    Despesa despesa = new Despesa(cd_despesa, vl_despesa, dt_despesa, categoria_despesa, descricao_despesa);
+
 				lista.add(despesa);
 			}
 			

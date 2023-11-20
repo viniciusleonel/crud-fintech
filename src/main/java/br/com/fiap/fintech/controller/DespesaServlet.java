@@ -13,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import br.com.fiap.fintech.bean.Despesa;
 import br.com.fiap.fintech.dao.DespesaDAO;
@@ -69,7 +70,12 @@ public class DespesaServlet extends HttpServlet {
 }
 	
 	private void listar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<Despesa> lista = despesaDao.getAll();	
+		HttpSession session = request.getSession();
+    	int codigoConta = (int) session.getAttribute("idConta");
+		
+		List<Despesa> lista = despesaDao.getAllById(codigoConta);	
+
+		
 		double totalDespesas = despesaDao.calcularTotal(lista);
 		
 		request.setAttribute("totalDespesas", totalDespesas);
