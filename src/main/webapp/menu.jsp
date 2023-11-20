@@ -32,11 +32,7 @@
     
     <c:if test="${not empty user }">
    		<a href="usuario?acao=listar" class="text-decoration-none me-2 " >
-   			${idConta }
-   			${conta }
     		${user }
-    		${id}
-    		${nome }
     		<a href="login" class="btn btn-outline-primary my-2 my-sm-0 text-white">Sair</a>
 	  	</a>	
     </c:if>	

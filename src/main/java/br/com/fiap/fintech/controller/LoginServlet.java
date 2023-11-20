@@ -73,7 +73,8 @@ public class LoginServlet extends HttpServlet {
 			session.setAttribute("senha", senha);
 			session.setAttribute("conta", contaNum);
 			session.setAttribute("idConta", idConta);
-			request.getRequestDispatcher("cadastro-receita.jsp").forward(request, response);
+			response.sendRedirect(request.getContextPath() + "/usuario?acao=listar");
+
 		}else {
 			request.setAttribute("erro", "Usuário e/ou senha inválidos");
 			request.getRequestDispatcher("home.jsp").forward(request, response);

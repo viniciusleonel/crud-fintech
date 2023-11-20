@@ -118,8 +118,8 @@ public class UsuarioServlet extends HttpServlet {
 
     private void abrirFormCadastro(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-    	
-		request.getRequestDispatcher("home.jsp").forward(request, response);
+
+		request.getRequestDispatcher("cadastro-usuario.jsp").forward(request, response);
 	}
 
 	private void cadastrar(HttpServletRequest request, HttpServletResponse response)
@@ -182,8 +182,6 @@ public class UsuarioServlet extends HttpServlet {
 			request.setAttribute("erro", "Por favor, valide os dados");
 		}
 		response.sendRedirect(request.getContextPath() + "/usuario?acao=listar");
-
-
 	}
 	
 	private void excluir(HttpServletRequest request, HttpServletResponse response)
