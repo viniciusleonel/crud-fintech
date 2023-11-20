@@ -38,14 +38,14 @@
 					<td>
 						<c:url value="usuario" var="link">
 							<c:param name="acao" value="listar"/>
-							<c:param name="codigo" value="${u.codigo}"/>
+							<c:param name="codigo" value="${usuario.codigo}"/>
 						</c:url>
 						<a href="${link}" class="btn btn-primary btn-xs me-1">Editar</a>
 						<button type="button" class="btn btn-danger btn-xs ms-1" 
 								data-bs-toggle="modal" 
 								data-bs-target="#excluirModal" 
-								onclick="codigoExcluir.value = ${u.codigo}"
-								onclick="codigoExcluir.value = ${u.conta.codigo}">
+								onclick="codigoExcluir.value = ${usuario.codigo}"
+								onclick="codigoExcluir.value = ${usuario.conta.codigo}">
   							Excluir
 						</button>
 					</td>
@@ -67,7 +67,7 @@
         		Deseja realmente excluir o usuário?
       </div>
       <div class="modal-footer">
-      	<form action="login" method="get">
+      	<form action="usuario" method="post">
       		<input type="hidden" name="acao" value="excluir">
       		<input type="hidden" name="codigo" id="codigoExcluir">
 	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>

@@ -186,16 +186,16 @@ public class UsuarioServlet extends HttpServlet {
 	
 	private void excluir(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		int codigoUser = Integer.parseInt(request.getParameter("codigo"));
-		
 		HttpSession session = request.getSession();
+    	int codigoUsuario = (int) session.getAttribute("id");
+
 		int idConta = (int) session.getAttribute("idConta");
 		try {
 			receitaDao.autoDelete(idConta);
 			despesaDao.autoDelete(idConta);
 			investimentoDAO.autoDelete(idConta);
-			contaDao.delete(codigoUser);
-			dao.delete(codigoUser);
+			contaDao.delete(codigoUsuario);
+			dao.delete(codigoUsuario);
 			request.getRequestDispatcher("home.jsp").forward(request, response);
 		} catch (DBException e) {
 			e.printStackTrace();
