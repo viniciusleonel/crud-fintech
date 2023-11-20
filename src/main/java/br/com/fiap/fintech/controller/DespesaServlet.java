@@ -75,7 +75,6 @@ public class DespesaServlet extends HttpServlet {
 		
 		List<Despesa> lista = despesaDao.getAllById(codigoConta);	
 
-		
 		double totalDespesas = despesaDao.calcularTotal(lista);
 		
 		request.setAttribute("totalDespesas", totalDespesas);
@@ -128,27 +127,22 @@ public class DespesaServlet extends HttpServlet {
 	}
 	
 	protected void setContaDespesa(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		int codigoConta = (int) session.getAttribute("idConta");
+		
 		int proximoValorReceita = 0;
-		int proximoValorConta = 0;
 		
 		try {
 		    conexao = ConnectionManager.getInstance().getConnection();
 
 		    String sql = "SELECT cd_despesa FROM tb_fin_despesa ORDER BY cd_despesa DESC FETCH FIRST 1 ROWS ONLY";
-		    String sql2 = "SELECT cd_conta FROM tb_fin_conta ORDER BY cd_conta DESC FETCH FIRST 1 ROWS ONLY";
 
-		    try (PreparedStatement pstmt = conexao.prepareStatement(sql);
-		         PreparedStatement pstmt2 = conexao.prepareStatement(sql2)) {
+		    try (PreparedStatement pstmt = conexao.prepareStatement(sql)) {
 
 		        ResultSet rs = pstmt.executeQuery();
-		        ResultSet rs2 = pstmt2.executeQuery();
 
 		        if (rs.next()) {
 		        	proximoValorReceita = rs.getInt(1);
-		        }
-
-		        if (rs2.next()) {
-		            proximoValorConta = rs2.getInt(1);
 		        }
 		        
 		        String updateSqlUser = "UPDATE tb_fin_despesa SET CD_CONTA = ? WHERE CD_despesa = ?";
@@ -156,10 +150,9 @@ public class DespesaServlet extends HttpServlet {
 
 		        try (PreparedStatement updateStmtUser = conexao.prepareStatement(updateSqlUser)) {
 
-		            updateStmtUser.setInt(1, proximoValorConta);
+		            updateStmtUser.setInt(1, codigoConta);
 		            updateStmtUser.setInt(2, proximoValorReceita);
 		            updateStmtUser.executeUpdate();
-
 
 		            System.out.println("Registros atualizados com sucesso!");
 		        }

@@ -27,7 +27,6 @@
 				<th>Descrição</th>
 				<th>Valor</th>
 				<th>Data</th>
-				<th>N.º Conta</th>
 				<th></th>
 			</tr>
 			<c:forEach items="${investimentos}" var="i">
@@ -38,7 +37,6 @@
 					<td>
 						<fmt:formatDate value="${i.data.time}" pattern="dd/MM/yyyy"/>
 					</td>
-					<td>${i.conta.num}</td>
 					<td>
 						<c:url value="investimento" var="link">
 							<c:param name="acao" value="abrir-form-edicao"/>
@@ -48,8 +46,7 @@
 						<button type="button" class="btn btn-danger btn-xs ms-1" 
 								data-bs-toggle="modal" 
 								data-bs-target="#excluirModal" 
-								onclick="codigoExcluir.value = ${i.codigo}"
-								onclick="codigoExcluir.value = ${i.conta.codigo}">
+								onclick="codigoExcluir.value = ${i.codigo}">
   							Excluir
 						</button>
 					</td>

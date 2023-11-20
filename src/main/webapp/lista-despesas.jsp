@@ -27,7 +27,6 @@
 				<th>Descrição</th>
 				<th>Valor</th>
 				<th>Data</th>
-				<th>N.º Conta</th>
 				<th></th>
 			</tr>
 			<c:forEach items="${despesas}" var="d">

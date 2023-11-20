@@ -13,7 +13,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import br.com.fiap.fintech.bean.Conta;
 import br.com.fiap.fintech.bean.Receita;
 import br.com.fiap.fintech.dao.ReceitaDAO;
 import br.com.fiap.fintech.exception.DBException;
@@ -69,7 +71,10 @@ public class ReceitaServlet extends HttpServlet {
 }
 	
 	private void listar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<Receita> lista = receitaDao.getAll();	
+		HttpSession session = request.getSession();
+    	int codigoConta = (int) session.getAttribute("idConta");
+		
+		List<Receita> lista = receitaDao.getAllById(codigoConta);	
 		
 		double totalReceitas = receitaDao.calcularTotal(lista);
 		
@@ -103,9 +108,7 @@ public class ReceitaServlet extends HttpServlet {
 			String categoria = request.getParameter("categoria");
 			String descricao = request.getParameter("descricao");
 			
-			
 			Receita receita = new Receita(0, valor, data, categoria, descricao);
-
 			receitaDao.insert(receita);
 
 			request.setAttribute("msg", "Receita cadastrada!");
@@ -123,38 +126,31 @@ public class ReceitaServlet extends HttpServlet {
 	}
 	
 	protected void setContaReceita(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		int codigoConta = (int) session.getAttribute("idConta");
+		
 		int proximoValorReceita = 0;
-		int proximoValorConta = 0;
 		
 		try {
 		    conexao = ConnectionManager.getInstance().getConnection();
 
 		    String sql = "SELECT cd_receita FROM tb_fin_receita ORDER BY cd_receita DESC FETCH FIRST 1 ROWS ONLY";
-		    String sql2 = "SELECT cd_conta FROM tb_fin_conta ORDER BY cd_conta DESC FETCH FIRST 1 ROWS ONLY";
-
-		    try (PreparedStatement pstmt = conexao.prepareStatement(sql);
-		         PreparedStatement pstmt2 = conexao.prepareStatement(sql2)) {
+		   
+		    try (PreparedStatement pstmt = conexao.prepareStatement(sql)) {
 
 		        ResultSet rs = pstmt.executeQuery();
-		        ResultSet rs2 = pstmt2.executeQuery();
 
 		        if (rs.next()) {
 		        	proximoValorReceita = rs.getInt(1);
 		        }
-
-		        if (rs2.next()) {
-		            proximoValorConta = rs2.getInt(1);
-		        }
-		        
+ 
 		        String updateSqlUser = "UPDATE tb_fin_receita SET CD_CONTA = ? WHERE CD_receita = ?";
-
 
 		        try (PreparedStatement updateStmtUser = conexao.prepareStatement(updateSqlUser)) {
 
-		            updateStmtUser.setInt(1, proximoValorConta);
+		            updateStmtUser.setInt(1, codigoConta);
 		            updateStmtUser.setInt(2, proximoValorReceita);
 		            updateStmtUser.executeUpdate();
-
 
 		            System.out.println("Registros atualizados com sucesso!");
 		        }

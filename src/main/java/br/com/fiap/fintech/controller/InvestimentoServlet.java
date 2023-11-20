@@ -13,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import br.com.fiap.fintech.bean.Investimento;
 import br.com.fiap.fintech.dao.InvestimentoDAO;
@@ -69,7 +70,11 @@ public class InvestimentoServlet extends HttpServlet {
 }
 	
 	private void listar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<Investimento> lista = investimentoDao.getAll();
+		HttpSession session = request.getSession();
+    	int codigoConta = (int) session.getAttribute("idConta");
+		
+		List<Investimento> lista = investimentoDao.getAllById(codigoConta);
+		
 		double totalInvestimentos = investimentoDao.calcularTotal(lista);
 		
 		request.setAttribute("totalInvestimentos", totalInvestimentos);
@@ -122,38 +127,32 @@ public class InvestimentoServlet extends HttpServlet {
 	}
 	
 	protected void setContaInvestimento(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		int codigoConta = (int) session.getAttribute("idConta");
+		
 		int proximoValorInvestimento = 0;
-		int proximoValorConta = 0;
+		
 		
 		try {
 		    conexao = ConnectionManager.getInstance().getConnection();
 
 		    String sql = "SELECT cd_Investimento FROM tb_fin_Investimento ORDER BY cd_Investimento DESC FETCH FIRST 1 ROWS ONLY";
-		    String sql2 = "SELECT cd_conta FROM tb_fin_conta ORDER BY cd_conta DESC FETCH FIRST 1 ROWS ONLY";
 
-		    try (PreparedStatement pstmt = conexao.prepareStatement(sql);
-		         PreparedStatement pstmt2 = conexao.prepareStatement(sql2)) {
+		    try (PreparedStatement pstmt = conexao.prepareStatement(sql)) {
 
 		        ResultSet rs = pstmt.executeQuery();
-		        ResultSet rs2 = pstmt2.executeQuery();
 
 		        if (rs.next()) {
 		        	proximoValorInvestimento = rs.getInt(1);
 		        }
-
-		        if (rs2.next()) {
-		            proximoValorConta = rs2.getInt(1);
-		        }
 		        
 		        String updateSqlUser = "UPDATE tb_fin_Investimento SET CD_CONTA = ? WHERE CD_Investimento = ?";
 
-
 		        try (PreparedStatement updateStmtUser = conexao.prepareStatement(updateSqlUser)) {
 
-		            updateStmtUser.setInt(1, proximoValorConta);
+		            updateStmtUser.setInt(1, codigoConta);
 		            updateStmtUser.setInt(2, proximoValorInvestimento);
 		            updateStmtUser.executeUpdate();
-
 
 		            System.out.println("Registros atualizados com sucesso!");
 		        }

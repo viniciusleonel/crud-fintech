@@ -13,11 +13,14 @@ public interface InvestimentoDAO {
 	
 	void delete (int cd) throws DBException;
 	
-	Investimento getById(int cd);
-	
-	List<Investimento> getAll();
-
 	void autoDelete(int cd) throws DBException;
 
 	double calcularTotal(List<Investimento> investimentos);
+	
+	List<Investimento> getAll();
+	
+	List<Investimento> getAllById(int id);
+	
+	Investimento getById(int cd);
+	
 }

@@ -9,9 +9,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import br.com.fiap.fintech.bean.Conta;
-import br.com.fiap.fintech.bean.Despesa;
 import br.com.fiap.fintech.bean.Investimento;
-import br.com.fiap.fintech.bean.Receita;
 import br.com.fiap.fintech.dao.InvestimentoDAO;
 import br.com.fiap.fintech.exception.DBException;
 import br.com.fiap.fintech.singleton.ConnectionManager;
@@ -244,6 +242,50 @@ public class OracleInvestimentoDAO implements InvestimentoDAO{
 			    conta.setNum(num_conta);
 			    conta.setSaldo(saldo_conta);
 			    investimento.setConta(conta);
+				lista.add(investimento);
+			}
+			
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				stmt.close();
+				rs.close();
+				conexao.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return lista;
+	}
+	
+	@Override
+	public List<Investimento> getAllById(int id) {
+		PreparedStatement stmt = null;
+		List<Investimento> lista = new ArrayList<Investimento>();
+		ResultSet rs = null;
+
+		try {
+			conexao = ConnectionManager.getInstance().getConnection();
+			
+			stmt = conexao.prepareStatement("SELECT * FROM TB_FIN_INVESTIMENTO WHERE CD_CONTA = ?");
+			stmt.setInt(1, id);
+		    rs = stmt.executeQuery();
+			
+			while (rs.next()) {
+				
+				int cd_investimento = rs.getInt("CD_INVESTIMENTO");
+			    double vl_investimento = rs.getDouble("VL_INVESTIMENTO");
+			    
+			    java.sql.Date data = rs.getDate("DT_INVESTIMENTO");
+				Calendar dt_investimento = Calendar.getInstance();
+				dt_investimento.setTimeInMillis(data.getTime());
+			    
+			    String categoria_investimento = rs.getString("CATEGORIA_INVESTIMENTO");
+			    String descricao_investimento = rs.getString("DESCRICAO_INVESTIMENTO");
+			    
+			    Investimento investimento = new Investimento(cd_investimento, vl_investimento, dt_investimento, categoria_investimento, descricao_investimento);
+
 				lista.add(investimento);
 			}
 			

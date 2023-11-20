@@ -9,6 +9,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import br.com.fiap.fintech.bean.Conta;
+import br.com.fiap.fintech.bean.Despesa;
 import br.com.fiap.fintech.bean.Receita;
 import br.com.fiap.fintech.dao.ReceitaDAO;
 import br.com.fiap.fintech.exception.DBException;
@@ -242,6 +243,50 @@ public class OracleReceitaDAO implements ReceitaDAO{
 			    conta.setNum(num_conta);
 			    conta.setSaldo(saldo_conta);
 			    receita.setConta(conta);
+				lista.add(receita);
+			}
+			
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				stmt.close();
+				rs.close();
+				conexao.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return lista;
+	}
+	
+	@Override
+	public List<Receita> getAllById(int id) {
+		PreparedStatement stmt = null;
+		List<Receita> lista = new ArrayList<Receita>();
+		ResultSet rs = null;
+
+		try {
+			conexao = ConnectionManager.getInstance().getConnection();
+			
+			stmt = conexao.prepareStatement("SELECT * FROM TB_FIN_RECEITA WHERE CD_CONTA = ?");
+			stmt.setInt(1, id);
+		    rs = stmt.executeQuery();
+			
+			while (rs.next()) {
+				
+				int cd_receita = rs.getInt("CD_RECEITA");
+			    double vl_receita = rs.getDouble("VL_RECEITA");
+			    
+			    java.sql.Date data = rs.getDate("DT_RECEITA");
+				Calendar dt_receita = Calendar.getInstance();
+				dt_receita.setTimeInMillis(data.getTime());
+			    
+			    String categoria_receita = rs.getString("CATEGORIA_RECEITA");
+			    String descricao_receita = rs.getString("DESCRICAO_RECEITA");
+			    
+			    Receita receita = new Receita(cd_receita, vl_receita, dt_receita, categoria_receita, descricao_receita);
+
 				lista.add(receita);
 			}
 			

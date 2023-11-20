@@ -27,7 +27,6 @@
 				<th>Descrição</th>
 				<th>Valor</th>
 				<th>Data</th>
-				<th>N.º Conta</th>
 				<th></th>
 				
 			</tr>
@@ -41,7 +40,6 @@
 					<td>
 						<fmt:formatDate value="${r.data.time}" pattern="dd/MM/yyyy"/>
 					</td>
-					<td>${r.conta.num}</td>
 					<td>
 						<c:url value="receita" var="link">
 							<c:param name="acao" value="abrir-form-edicao"/>
@@ -51,8 +49,7 @@
 						<button type="button" class="btn btn-danger btn-xs ms-1" 
 								data-bs-toggle="modal" 
 								data-bs-target="#excluirModal" 
-								onclick="codigoExcluir.value = ${r.codigo}"
-								onclick="codigoExcluir.value = ${r.conta.codigo}">
+								onclick="codigoExcluir.value = ${r.codigo}">
   							Excluir
 						</button>
 					</td>

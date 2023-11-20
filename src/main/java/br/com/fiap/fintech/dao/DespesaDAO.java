@@ -17,9 +17,9 @@ public interface DespesaDAO {
 
 	double calcularTotal(List<Despesa> despesas);
 	
-	Despesa getById(int cd);
-	
 	List<Despesa> getAll();
 
 	List<Despesa> getAllById(int id);
+	
+	Despesa getById(int cd);
 }

@@ -170,7 +170,7 @@ public class OracleDespesaDAO implements DespesaDAO{
 		try {
 			conexao = ConnectionManager.getInstance().getConnection();
 			
-			stmt = conexao.prepareStatement("SELECT * FROM TB_FIN_DESPESA WHERE CD_CONTA = ?");
+			stmt = conexao.prepareStatement("SELECT * FROM TB_FIN_DESPESA WHERE CD_DESPESA = ?");
 		    stmt.setInt(1, cd);
 		    rs = stmt.executeQuery();
 		    

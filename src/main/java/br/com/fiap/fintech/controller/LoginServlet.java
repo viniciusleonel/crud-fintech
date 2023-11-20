@@ -30,8 +30,6 @@ public class LoginServlet extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		session.removeAttribute("idConta");
-		session.removeAttribute("id");
 		session.invalidate();
 		request.getRequestDispatcher("home.jsp").forward(request, response);
 	}

@@ -13,11 +13,13 @@ public interface ReceitaDAO {
 	
 	void delete (int cd) throws DBException;
 	
-	Receita getById(int cd);
-	
-	List<Receita> getAll();
-
 	void autoDelete(int cd) throws DBException;
 
 	double calcularTotal(List<Receita> lista);
+	
+	List<Receita> getAll();
+
+	List<Receita> getAllById(int id);
+
+	Receita getById(int cd);
 }
