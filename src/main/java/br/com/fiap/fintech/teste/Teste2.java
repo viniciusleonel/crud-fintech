@@ -1,23 +1,12 @@
 package br.com.fiap.fintech.teste;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Calendar;
 import java.util.List;
 
 import br.com.fiap.fintech.bean.Despesa;
-import br.com.fiap.fintech.bean.Receita;
-import br.com.fiap.fintech.bean.Usuario;
 import br.com.fiap.fintech.dao.DespesaDAO;
-import br.com.fiap.fintech.dao.ReceitaDAO;
 import br.com.fiap.fintech.dao.UsuarioDAO;
 import br.com.fiap.fintech.exception.DBException;
 import br.com.fiap.fintech.factory.DAOFactory;
-import br.com.fiap.fintech.util.CriptografiaUtils;
-import br.com.fiap.store.bean.Categoria;
 
 public class Teste2 {
     public static void main(String[] args) throws DBException {

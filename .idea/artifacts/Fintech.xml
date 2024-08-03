@@ -1,0 +1,19 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="Fintech">
+    <output-path>$PROJECT_DIR$/classes/artifacts/Fintech</output-path>
+    <root id="archive" name="Fintech.war">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="Fintech" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="module" name="ojdbc8.jar" module-name="Fintech" />
+          <element id="library" level="module" name="javax.mail.jar" module-name="Fintech" />
+          <element id="library" level="project" name="Java EE 6-Java EE 6" />
+          <element id="library" level="module" name="activation.jar" module-name="Fintech" />
+        </element>
+      </element>
+      <element id="javaee-facet-resources" facet="Fintech/web/Web" />
+    </root>
+  </artifact>
+</component>

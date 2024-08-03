@@ -1,0 +1,52 @@
+body {
+    color: black;
+}
+
+:root{
+    --bg-btn-dark: rgba(0, 0, 0, 0.5);
+    --bg-btn-blue: rgba(33, 48, 190, 0.4);
+    --bg-btn-data: rgb(89, 117, 214);
+}
+
+.btn {
+    font-size: 18px;
+}
+
+.bg-btn-dark {
+    background: var(--bg-btn-dark);
+}
+
+.bg-btn-blue {
+    background: var(--bg-btn-blue);
+}
+
+.bg-btn-dark:hover, .bg-btn-blue:hover {
+    background-color: transparent;
+    color: white;
+    border-color: black;
+}
+
+.btn-logar:hover {
+    background-color: var(--bg-btn-data);
+}
+
+.dropdown-item:hover{
+	background-color: #B0C4DE;
+	font-weight: 500;
+}
+
+.home {
+    text-decoration: none;
+}
+
+input:invalid {
+    border: 2px inset red;
+}
+
+
+@media(max-width: 1300px){
+    .bg-img{
+        background-position: 55% 50%;
+        height: 100vh;
+    }
+}
