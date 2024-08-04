@@ -64,7 +64,7 @@
                 <div class="modal-dialog ">
                     <div class="modal-content bg-img container">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-2" id="exampleModalLabel">Fintech</h1>
+                            <h1 class="modal-title fs-2" id="modalLogar">Fintech</h1>
 							 
                             <button type="button" class="btn-close form-area" data-bs-dismiss="modal"
                                 aria-label="Close"></button>
@@ -113,7 +113,7 @@
                 <div class="modal-dialog ">
                     <div class="modal-content bg-img container">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-2" id="exampleModalLabel">Fintech</h1>
+                            <h1 class="modal-title fs-2" id="modalAbrirConta">Fintech</h1>
 
                             <button type="button" class="btn-close form-area" data-bs-dismiss="modal"
                                 aria-label="Close"></button>
@@ -147,7 +147,7 @@
                                 </div>
                                 
                                 <div class="mb-3">
-                                    <label for="id-email" class="form-label fs-4">Email</label>
+                                    <label for="id-email class="form-label fs-4">Email</label>
                                     <input type="text" class="form-control form-area" name="email" id="id-email"
                                         placeholder="teste@fiap.com" required>
                                 </div>

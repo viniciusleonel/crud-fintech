@@ -134,31 +134,31 @@ public class UsuarioServlet extends HttpServlet {
 			String senha = request.getParameter("senha");
 			
 			senha = CriptografiaUtils.criptografar(senha);
-			
+
 			Usuario usuario = new Usuario(0, nome, cpf, login, email, senha);
 			Conta conta = new Conta (0,0,0, "Ativa");
-			
+
 			usuario.setConta(conta);
 			conta.setCd_usuario(usuario);
-			
+
 			dao.insert(usuario);
 			contaDao.insert(conta);
-	
+
 			request.setAttribute("msg", "Usuário cadastrado, efetue o login!");
-			
+
 			setContaUsuario(request,response);
-			
+
 		}catch(DBException db) {
 			db.printStackTrace();
 			request.setAttribute("erro", "Erro ao cadastrar");
-			
+
 		}catch(Exception e){
 			e.printStackTrace();
 			request.setAttribute("erro","Por favor, valide os dados");
 		}
 		request.getRequestDispatcher("home.jsp").forward(request, response);
-	}	
-	
+	}
+
 	private void editar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			int codigo = Integer.parseInt(request.getParameter("codigo"));
@@ -170,7 +170,7 @@ public class UsuarioServlet extends HttpServlet {
 			
 			senha = CriptografiaUtils.criptografar(senha);	
 			
-			Usuario usuario = new Usuario(codigo, nome, cpf, login, email, senha); 
+			Usuario usuario = new Usuario(codigo, nome, cpf, login, email, senha);
 			dao.update(usuario, codigo);
 
 			request.setAttribute("msg", "Usuário atualizado!");
@@ -183,6 +183,8 @@ public class UsuarioServlet extends HttpServlet {
 		}
 		response.sendRedirect(request.getContextPath() + "/usuario?acao=listar");
 	}
+	
+	
 	
 	private void excluir(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {

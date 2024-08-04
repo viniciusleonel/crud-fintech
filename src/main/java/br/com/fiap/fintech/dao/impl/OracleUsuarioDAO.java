@@ -183,7 +183,7 @@ public class OracleUsuarioDAO implements UsuarioDAO{
 			stmt.setString(3, usuario.getLogin());
 			stmt.setString(4, usuario.getEmail());
 			stmt.setString(5, usuario.getSenha());
-			stmt.setInt(6, usuario.getCodigo());
+			stmt.setInt(6, usuario.getConta().getCodigo());
 			stmt.setInt(7, cd_conta);
 			stmt.executeUpdate();
 						

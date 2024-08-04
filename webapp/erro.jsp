@@ -4,9 +4,17 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Fintech</title>
+    <title>Fintech - Erro</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 20%;
+        }
+    </style>
 </head>
 <body>
-Erro!
+    <h1>Erro!</h1>
+    <p>Desculpe, ocorreu um erro. Por favor, tente novamente mais tarde.</p>
 </body>
 </html>
